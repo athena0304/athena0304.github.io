@@ -57,25 +57,19 @@
 
 
 
-<meta name="description" content="题目编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。
-解读除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。
-方法在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。质数大于等于2 不能被它本身和1以外的数整除。
-12345">
+<meta name="description" content="第二章 词法作用域作用域一般有两种模型，一种是词法作用域，是大多数包括js使用的，另一种是动态作用域，如bash脚本之类的。
+2.1 词法阶段">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[月影]1-1-1 prime number">
-<meta property="og:url" content="http://yoursite.com/2016/03/16/月影-1-1-1-prime-number/index.html">
+<meta property="og:title" content="你不知道的js第二章笔记">
+<meta property="og:url" content="http://yoursite.com/2017/03/13/你不知道的js第二章笔记/index.html">
 <meta property="og:site_name" content="Athena">
-<meta property="og:description" content="题目编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。
-解读除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。
-方法在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。质数大于等于2 不能被它本身和1以外的数整除。
-12345">
-<meta property="og:updated_time" content="2017-03-11T06:42:31.000Z">
+<meta property="og:description" content="第二章 词法作用域作用域一般有两种模型，一种是词法作用域，是大多数包括js使用的，另一种是动态作用域，如bash脚本之类的。
+2.1 词法阶段">
+<meta property="og:updated_time" content="2017-03-14T02:28:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[月影]1-1-1 prime number">
-<meta name="twitter:description" content="题目编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。
-解读除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。
-方法在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。质数大于等于2 不能被它本身和1以外的数整除。
-12345">
+<meta name="twitter:title" content="你不知道的js第二章笔记">
+<meta name="twitter:description" content="第二章 词法作用域作用域一般有两种模型，一种是词法作用域，是大多数包括js使用的，另一种是动态作用域，如bash脚本之类的。
+2.1 词法阶段">
 
 
 
@@ -93,7 +87,7 @@
   };
 </script>
 
-  <title> [月影]1-1-1 prime number | Athena </title>
+  <title> 你不知道的js第二章笔记 | Athena </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -223,7 +217,7 @@
             
             
               
-                [月影]1-1-1 prime number
+                你不知道的js第二章笔记
               
             
           </h1>
@@ -235,8 +229,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-16T16:27:53+08:00" content="2016-03-16">
-              2016-03-16
+            <time itemprop="dateCreated" datetime="2017-03-13T11:02:42+08:00" content="2017-03-13">
+              2017-03-13
             </time>
           </span>
 
@@ -246,8 +240,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/16/月影-1-1-1-prime-number/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/月影-1-1-1-prime-number/" itemprop="commentsCount"></span>
+                <a href="/2017/03/13/你不知道的js第二章笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/13/你不知道的js第二章笔记/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -269,12 +263,8 @@
       
 
       
-        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。</p>
-<h3 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h3><p>除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。<br>质数大于等于2 不能被它本身和1以外的数整除。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">IsPrime</span>(<span class="params">testNum</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (testNum &lt; <span class="number">2</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">var</span> len = <span class="built_in">Math</span>.sqrt(testNum);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">2</span>; i &lt;= len; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (testNum % i === <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><a href="https://github.com/athena0304/training/tree/master/1-1-1-prime%20number" target="_blank" rel="external">源码</a></p>
-
+        <h2 id="第二章-词法作用域"><a href="#第二章-词法作用域" class="headerlink" title="第二章 词法作用域"></a>第二章 词法作用域</h2><p>作用域一般有两种模型，一种是词法作用域，是大多数包括js使用的，另一种是动态作用域，如bash脚本之类的。</p>
+<h3 id="2-1-词法阶段"><a href="#2-1-词法阶段" class="headerlink" title="2.1 词法阶段"></a>2.1 词法阶段</h3>
       
     </div>
 
@@ -297,16 +287,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/14/1-1-2/" rel="next" title="1-1-2">
-                <i class="fa fa-chevron-left"></i> 1-1-2
+              <a href="/2017/03/11/你不知道的js第一章笔记-1/" rel="next" title="你不知道的js第一章笔记">
+                <i class="fa fa-chevron-left"></i> 你不知道的js第一章笔记
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/16/月影-1-1-3-reverse-string/" rel="prev" title="[月影]1-1-3 reverse string">
-                [月影]1-1-3 reverse string <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/10/你不知道的js第五章笔记/" rel="prev" title="你不知道的js第五章笔记">
+                你不知道的js第五章笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -333,8 +323,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/16/月影-1-1-1-prime-number/"
-           data-title="[月影]1-1-1 prime number" data-url="http://yoursite.com/2016/03/16/月影-1-1-1-prime-number/">
+      <div class="ds-thread" data-thread-key="2017/03/13/你不知道的js第二章笔记/"
+           data-title="你不知道的js第二章笔记" data-url="http://yoursite.com/2017/03/13/你不知道的js第二章笔记/">
       </div>
     
   </div>
@@ -423,7 +413,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解读"><span class="nav-number">2.</span> <span class="nav-text">解读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">3.</span> <span class="nav-text">方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-词法作用域"><span class="nav-number">1.</span> <span class="nav-text">第二章 词法作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-词法阶段"><span class="nav-number">1.1.</span> <span class="nav-text">2.1 词法阶段</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

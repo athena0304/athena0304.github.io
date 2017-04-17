@@ -59,7 +59,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Athena">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Athena">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Athena">
@@ -80,7 +80,7 @@
   };
 </script>
 
-  <title> 归档 | Athena </title>
+  <title> Athena </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -111,7 +111,9 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -188,408 +190,216 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
+  <section id="posts" class="posts-expand">
+    
+      
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  
+  
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 12 篇日志。 继续努力。
-    </span>
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
 
-      
-      
-      
-
-      
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/14/1-1-2/" itemprop="url">
+                  1-1-2
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-14T14:51:44+08:00" content="2016-03-14">
+              2016-03-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/14/1-1-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/14/1-1-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
         </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
         
-            <a class="post-title-link" href="/2017/04/14/面试题整理/" itemprop="url">
-              
-                <span itemprop="name">面试题整理</span>
-              
-            </a>
+          
+            <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>编写一个JavaScript函数，对给定的一个数组，找出其中第二大的元素。</p>
+<h3 id="用例"><a href="#用例" class="headerlink" title="用例"></a>用例</h3><p>[input] [12,66,5,86,5,78,0,55,78]</p>
+<p>[output] [78]</p>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>有两个数，first和second，初始值都设为负无穷大(-Infinity)。遍历整个数组，如果当前数组数比first大，那么就替换first，first这个数给second，如果当前数比fist小比second大，那么就替换second。这样就保持first永远是当前最大值，second永远是当前第二大的值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSecond</span>(<span class="params">arr</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> first = -<span class="literal">Infinity</span>, second = -<span class="literal">Infinity</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> n = arr[i];</div><div class="line">        <span class="keyword">if</span> (n &gt; first) &#123;</div><div class="line">            second = first;</div><div class="line">            first = n;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (n &lt; first &amp;&amp; n &gt; second) &#123;</div><div class="line">            second = n;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> second;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>可以先对数组里的数进行排序，然后再去重，那么剩下的数组的第二个数肯定就是第二大的了，相比于上一种方法，第三大、第四大也都ok，其实就是一个去重排序的过程啊</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSecondMethod2</span>(<span class="params">arr</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">Array</span>.isArray(arr)) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">var</span> sortArr = arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> b - a</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">    <span class="keyword">var</span> resArr = [sortArr[<span class="number">0</span>]];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;sortArr.length; i++)&#123;</div><div class="line">        <span class="keyword">if</span>(sortArr[i] !== resArr[resArr.length <span class="number">-1</span>])&#123;</div><div class="line">            resArr.push(sortArr[i]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> resArr[<span class="number">1</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/athena0304/training/tree/master/1-1-2-second%20large" target="_blank" rel="external">源码</a></p>
+
+          
         
-      </h1>
+      
+    </div>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-14T20:31:23+08:00"
-              content="2017-04-14" >
-          04-14
-        </time>
-      </div>
+    <div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </article>
 
 
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
 
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
         
-            <a class="post-title-link" href="/2017/04/11/你不知道的js笔记-this和原型/" itemprop="url">
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
               
-                <span itemprop="name">你不知道的js笔记-this和原型</span>
+                
+                <a class="post-title-link" href="/2016/02/24/test/" itemprop="url">
+                  test
+                </a>
               
-            </a>
+            
+          </h1>
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-11T11:06:01+08:00"
-              content="2017-04-11" >
-          04-11
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-24T19:58:06+08:00" content="2016-02-24">
+              2016-02-24
+            </time>
+          </span>
 
-    </header>
-  </article>
+          
 
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/24/test/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/24/test/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
 
+          
 
-    
+          
+          
 
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/10/你不知道的js第五章笔记/" itemprop="url">
-              
-                <span itemprop="name">你不知道的js第五章笔记</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-10T11:06:56+08:00"
-              content="2017-04-10" >
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/13/你不知道的js第二章笔记/" itemprop="url">
-              
-                <span itemprop="name">你不知道的js第二章笔记</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-13T11:02:42+08:00"
-              content="2017-03-13" >
-          03-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/11/你不知道的js第一章笔记-1/" itemprop="url">
-              
-                <span itemprop="name">你不知道的js第一章笔记</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-11T18:30:23+08:00"
-              content="2017-03-11" >
-          03-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/11/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-11T14:42:31+08:00"
-              content="2017-03-11" >
-          03-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
         </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
         
-            <a class="post-title-link" href="/2016/03/18/月影-1-5-数组/" itemprop="url">
-              
-                <span itemprop="name">[月影]1-5 数组</span>
-              
-            </a>
+          
+            <p>测试测试</p>
+<p>####地对地导弹</p>
+<p>test in 20193019230192301293</p>
+<p><img src="/images/test1.jpg" alt=""></p>
+
+          
         
-      </h1>
+      
+    </div>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-18T19:18:53+08:00"
-              content="2016-03-18" >
-          03-18
-        </time>
-      </div>
+    <div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </article>
 
 
-
     
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/16/月影-1-3-类型/" itemprop="url">
-              
-                <span itemprop="name">[月影]1-3 类型</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-16T18:32:43+08:00"
-              content="2016-03-16" >
-          03-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/16/月影-1-1-3-reverse-string/" itemprop="url">
-              
-                <span itemprop="name">[月影]1-1-3 reverse string</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-16T17:23:37+08:00"
-              content="2016-03-16" >
-          03-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/16/月影-1-1-1-prime-number/" itemprop="url">
-              
-                <span itemprop="name">[月影]1-1-1 prime number</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-16T16:27:53+08:00"
-              content="2016-03-16" >
-          03-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
-
 
 
 
@@ -754,12 +564,6 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
-
 
   
 

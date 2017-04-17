@@ -213,6 +213,418 @@
             
               
                 
+                <a class="post-title-link" href="/2017/04/14/面试题整理/" itemprop="url">
+                  面试题整理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-14T20:31:23+08:00" content="2017-04-14">
+              2017-04-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/04/14/面试题整理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/14/面试题整理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="new操作符具体做了什么"><a href="#new操作符具体做了什么" class="headerlink" title="new操作符具体做了什么"></a>new操作符具体做了什么</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> func = <span class="keyword">new</span> Func();</div></pre></td></tr></table></figure>
+<p>new共经过了四个阶段</p>
+<h4 id="1-创建一个空对象"><a href="#1-创建一个空对象" class="headerlink" title="1. 创建一个空对象"></a>1. 创建一个空对象</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</div></pre></td></tr></table></figure>
+<h4 id="2-设置原型链"><a href="#2-设置原型链" class="headerlink" title="2. 设置原型链"></a>2. 设置原型链</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">obj.__proto__= Func.prototype;</div></pre></td></tr></table></figure>
+<h4 id="3-让Func中的this指向obj，并执行Func的函数体。"><a href="#3-让Func中的this指向obj，并执行Func的函数体。" class="headerlink" title="3. 让Func中的this指向obj，并执行Func的函数体。"></a>3. 让Func中的this指向obj，并执行Func的函数体。</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> result = Func.call(obj);</div></pre></td></tr></table></figure>
+<h4 id="4-判断Func的返回值类型："><a href="#4-判断Func的返回值类型：" class="headerlink" title="4. 判断Func的返回值类型："></a>4. 判断Func的返回值类型：</h4><p>如果是值类型，返回obj。如果是引用类型，就返回这个引用类型的对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span>(result) == <span class="string">"object"</span>) &#123;</div><div class="line">  func = result;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  func = obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/11/你不知道的js笔记-this和原型/" itemprop="url">
+                  你不知道的js笔记-this和原型
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-11T11:06:01+08:00" content="2017-04-11">
+              2017-04-11
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/04/11/你不知道的js笔记-this和原型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/11/你不知道的js笔记-this和原型/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="this的调用"><a href="#this的调用" class="headerlink" title="this的调用"></a>this的调用</h2><p>每个函数的this是在调用时被绑定的，完全取决于函数的调用位置，也就是函数的调用方法。<br>那么就要分析调用栈，可以用浏览器的调试工具查看调用栈。打断点后，显示的调用栈的第二个元素，就是真正的调用位置。</p>
+<h3 id="绑定规则"><a href="#绑定规则" class="headerlink" title="绑定规则"></a>绑定规则</h3><h4 id="1-默认绑定"><a href="#1-默认绑定" class="headerlink" title="1. 默认绑定"></a>1. 默认绑定</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">funciton foo()&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line">foo(); <span class="comment">//2</span></div></pre></td></tr></table></figure>
+<p>如果使用严格模式，则不能将全局对象用于默认绑定，因此this会绑定到undefined</p>
+<h4 id="2-隐式绑定"><a href="#2-隐式绑定" class="headerlink" title="2. 隐式绑定"></a>2. 隐式绑定</h4><p>在一个对象内部包含一个指向函数的属性，并通过这个属性间接引用函数，从而把this间接（隐式）绑定到这个对象上。<br>当函数引用有上下文对象时，隐式绑定规则会把函数调用中的this绑定到这个上下文对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">funciton foo() &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">a</span>: <span class="number">2</span>,</div><div class="line">  <span class="attr">foo</span>: foo</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.foo(); <span class="comment">//2</span></div></pre></td></tr></table></figure>
+<h4 id="3-显式绑定"><a href="#3-显式绑定" class="headerlink" title="3. 显式绑定"></a>3. 显式绑定</h4><p>call(…)和apply(…)<br>它们的第一个参数是一个对象，是给this准备的，接着在调用函数时将其绑定到this。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">funciton foo() &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">a</span>:<span class="number">2</span></div><div class="line">&#125;;</div><div class="line">foo.call(obj); <span class="comment">//2</span></div></pre></td></tr></table></figure>
+<p>如果传入了一个原始值，也就是字符串类型、布尔类型或者数字类型来当做this的绑定对象，这个原始值会被转换成它的对象形式，也就是new String(…), new Boolean(…), new Number(…)</p>
+<h5 id="3-1-硬绑定"><a href="#3-1-硬绑定" class="headerlink" title="3.1 硬绑定"></a>3.1 硬绑定</h5><p>ES5提供了内置的方法Function.prototype.bind，它的用法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">something</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a, something);</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.a + something;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">a</span>:<span class="number">2</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> bar = foo.bind(obj);</div><div class="line"></div><div class="line"><span class="keyword">var</span> b = bar (<span class="number">3</span>); <span class="comment">//2 3</span></div><div class="line"><span class="built_in">console</span>.log(b); <span class="comment">//5</span></div></pre></td></tr></table></figure>
+<p>bind会返回一个硬解码的新函数，它会把你指定的参数设置为this的上下文并调用原始函数。</p>
+<h5 id="3-2-API调用的上下文"><a href="#3-2-API调用的上下文" class="headerlink" title="3.2 API调用的上下文"></a>3.2 API调用的上下文</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">fonction foo(el) &#123;</div><div class="line">  <span class="built_in">console</span>.log(el, <span class="keyword">this</span>.id);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">id</span>: <span class="string">"awesome"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//调用foo(...)时把this绑定到obj</span></div><div class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].forEach(foo, obj)</div></pre></td></tr></table></figure>
+<h4 id="4-new绑定"><a href="#4-new绑定" class="headerlink" title="4. new绑定"></a>4. new绑定</h4>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/10/你不知道的js第五章笔记/" itemprop="url">
+                  你不知道的js第五章笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-10T11:06:56+08:00" content="2017-04-10">
+              2017-04-10
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/04/10/你不知道的js第五章笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/10/你不知道的js第五章笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="作用域闭包"><a href="#作用域闭包" class="headerlink" title="作用域闭包"></a>作用域闭包</h2><p>首先是闭包的定义：</p>
+<blockquote>
+<p>当函数可以记住并访问所在的词法作用域时，就产生了闭包，即使函数是在当前词法作用域之外执行。</p>
+</blockquote>
+<p>无论使用何种方式对函数类型的值进行传递，当函数在别处被调用时都可以观察到闭包。</p>
+<p>本质上无论何时何地，如果将（访问它们各自词法作用域的）函数当做第一级的值类型并到处传递，就会看到闭包在这些函数的应用。例如定时器、事件监听器、ajax请求、跨窗口通信等，只要使用了毁掉函数，实际上就是在使用闭包。</p>
+<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>模块模式需要具备两个必要条件：</p>
+<ol>
+<li>必须有外部的封闭函数，该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）</li>
+<li>封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。</li>
+</ol>
+<p>es6的模块没有“行内”格式，必须被定义在独立的文件中，即一个文件一个模块。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/13/你不知道的js第二章笔记/" itemprop="url">
+                  你不知道的js第二章笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-13T11:02:42+08:00" content="2017-03-13">
+              2017-03-13
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/13/你不知道的js第二章笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/13/你不知道的js第二章笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="第二章-词法作用域"><a href="#第二章-词法作用域" class="headerlink" title="第二章 词法作用域"></a>第二章 词法作用域</h2><p>作用域一般有两种模型，一种是词法作用域，是大多数包括js使用的，另一种是动态作用域，如bash脚本之类的。</p>
+<h3 id="2-1-词法阶段"><a href="#2-1-词法阶段" class="headerlink" title="2.1 词法阶段"></a>2.1 词法阶段</h3>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/03/11/你不知道的js第一章笔记-1/" itemprop="url">
                   你不知道的js第一章笔记
                 </a>
@@ -263,12 +675,12 @@
       
         
           
-            <h3 id="1-1-编译原理"><a href="#1-1-编译原理" class="headerlink" title="1.1 编译原理"></a>1.1 编译原理</h3><p>传统编译语言一般会经历以下三个流程：</p>
-<h4 id="分词-词法分析"><a href="#分词-词法分析" class="headerlink" title="分词/词法分析"></a>分词/词法分析</h4><p>生成词法单元</p>
-<h4 id="解析-语法分析"><a href="#解析-语法分析" class="headerlink" title="解析/语法分析"></a>解析/语法分析</h4><p>将词法单元转换成抽象语法树</p>
-<h4 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h4><p>将抽象语法树转换成可执行代码</p>
+            <h2 id="1-1-编译原理"><a href="#1-1-编译原理" class="headerlink" title="1.1 编译原理"></a>1.1 编译原理</h2><p>传统编译语言一般会经历以下三个流程：</p>
+<h3 id="分词-词法分析"><a href="#分词-词法分析" class="headerlink" title="分词/词法分析"></a>分词/词法分析</h3><p>生成词法单元</p>
+<h3 id="解析-语法分析"><a href="#解析-语法分析" class="headerlink" title="解析/语法分析"></a>解析/语法分析</h3><p>将词法单元转换成抽象语法树</p>
+<h3 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h3><p>将抽象语法树转换成可执行代码</p>
 <p>对于js来说，编译基本发生在代码执行前的几微秒的时间内，也就是在执行前编译，编译完马上执行。</p>
-<h3 id="1-2-理解作用域"><a href="#1-2-理解作用域" class="headerlink" title="1.2 理解作用域"></a>1.2 理解作用域</h3><p>首先是说处理代码的时候，有三个东西，分别是引擎、编译器和作用域。</p>
+<h2 id="1-2-理解作用域"><a href="#1-2-理解作用域" class="headerlink" title="1.2 理解作用域"></a>1.2 理解作用域</h2><p>首先是说处理代码的时候，有三个东西，分别是引擎、编译器和作用域。</p>
 <p>首先编译器要先进行上一节说到的词法分析和语法分析，然后去作用域查询这个变量是否存在，然后为引擎生成执行代码</p>
 <p>然后就遇到了LHS和RHS查询，查了一下就是left-hand-side和right-hand-side，就是左手边和右手边的意思。当变量出现在哪侧就执行哪侧的查询。<br>LHS就是查找变量容器本身，也就是赋值操作的目标是谁。<br>RHS就是简单的查找某个变量的值，也就是谁是赋值操作的源头。<br>如果查找的目的是对变量进行赋值，那么就会使用LHS查询；如果目的是获取变量的值，就会使用RHS查询。<br>LHS和RHS查询都会一层层的向上查找作用域，如果RHS不成功会抛出异常，如果LHS不成功，在非严格模式下会自动隐式的创建一个全局变量，严格模式下会抛出异常。</p>
 
@@ -813,211 +1225,13 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/14/1-1-2/" itemprop="url">
-                  1-1-2
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-14T14:51:44+08:00" content="2016-03-14">
-              2016-03-14
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/14/1-1-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/14/1-1-2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>编写一个JavaScript函数，对给定的一个数组，找出其中第二大的元素。</p>
-<h3 id="用例"><a href="#用例" class="headerlink" title="用例"></a>用例</h3><p>[input] [12,66,5,86,5,78,0,55,78]</p>
-<p>[output] [78]</p>
-<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>有两个数，first和second，初始值都设为负无穷大(-Infinity)。遍历整个数组，如果当前数组数比first大，那么就替换first，first这个数给second，如果当前数比fist小比second大，那么就替换second。这样就保持first永远是当前最大值，second永远是当前第二大的值</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSecond</span>(<span class="params">arr</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> first = -<span class="literal">Infinity</span>, second = -<span class="literal">Infinity</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> n = arr[i];</div><div class="line">        <span class="keyword">if</span> (n &gt; first) &#123;</div><div class="line">            second = first;</div><div class="line">            first = n;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (n &lt; first &amp;&amp; n &gt; second) &#123;</div><div class="line">            second = n;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> second;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>可以先对数组里的数进行排序，然后再去重，那么剩下的数组的第二个数肯定就是第二大的了，相比于上一种方法，第三大、第四大也都ok，其实就是一个去重排序的过程啊</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSecondMethod2</span>(<span class="params">arr</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">Array</span>.isArray(arr)) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">var</span> sortArr = arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> b - a</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">    <span class="keyword">var</span> resArr = [sortArr[<span class="number">0</span>]];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;sortArr.length; i++)&#123;</div><div class="line">        <span class="keyword">if</span>(sortArr[i] !== resArr[resArr.length <span class="number">-1</span>])&#123;</div><div class="line">            resArr.push(sortArr[i]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> resArr[<span class="number">1</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><a href="https://github.com/athena0304/training/tree/master/1-1-2-second%20large" target="_blank" rel="external">源码</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/24/test/" itemprop="url">
-                  test
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-24T19:58:06+08:00" content="2016-02-24">
-              2016-02-24
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/02/24/test/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/24/test/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>测试测试</p>
-<p>####地对地导弹</p>
-<p>test in 20193019230192301293</p>
-<p><img src="/images/test1.jpg" alt=""></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1056,7 +1270,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Javacscipt," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -57,25 +57,28 @@
 
 
 
-<meta name="description" content="题目编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。
-解读除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。
-方法在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。质数大于等于2 不能被它本身和1以外的数整除。
-12345">
+<meta name="description" content="new操作符具体做了什么12var Func = function() &amp;#123;&amp;#125;;var func = new Func();
+new共经过了四个阶段
+1. 创建一个空对象1var obj = new Object();
+2. 设置原型链1obj.__proto__= Func.prototype;
+3. 让Func中的this指向obj，并执行Func的函数体。1var resu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[月影]1-1-1 prime number">
-<meta property="og:url" content="http://yoursite.com/2016/03/16/月影-1-1-1-prime-number/index.html">
+<meta property="og:title" content="面试题整理">
+<meta property="og:url" content="http://yoursite.com/2017/04/14/面试题整理/index.html">
 <meta property="og:site_name" content="Athena">
-<meta property="og:description" content="题目编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。
-解读除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。
-方法在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。质数大于等于2 不能被它本身和1以外的数整除。
-12345">
-<meta property="og:updated_time" content="2017-03-11T06:42:31.000Z">
+<meta property="og:description" content="new操作符具体做了什么12var Func = function() &amp;#123;&amp;#125;;var func = new Func();
+new共经过了四个阶段
+1. 创建一个空对象1var obj = new Object();
+2. 设置原型链1obj.__proto__= Func.prototype;
+3. 让Func中的this指向obj，并执行Func的函数体。1var resu">
+<meta property="og:updated_time" content="2017-04-14T12:49:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[月影]1-1-1 prime number">
-<meta name="twitter:description" content="题目编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。
-解读除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。
-方法在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。质数大于等于2 不能被它本身和1以外的数整除。
-12345">
+<meta name="twitter:title" content="面试题整理">
+<meta name="twitter:description" content="new操作符具体做了什么12var Func = function() &amp;#123;&amp;#125;;var func = new Func();
+new共经过了四个阶段
+1. 创建一个空对象1var obj = new Object();
+2. 设置原型链1obj.__proto__= Func.prototype;
+3. 让Func中的this指向obj，并执行Func的函数体。1var resu">
 
 
 
@@ -93,7 +96,7 @@
   };
 </script>
 
-  <title> [月影]1-1-1 prime number | Athena </title>
+  <title> 面试题整理 | Athena </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -223,7 +226,7 @@
             
             
               
-                [月影]1-1-1 prime number
+                面试题整理
               
             
           </h1>
@@ -235,8 +238,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-16T16:27:53+08:00" content="2016-03-16">
-              2016-03-16
+            <time itemprop="dateCreated" datetime="2017-04-14T20:31:23+08:00" content="2017-04-14">
+              2017-04-14
             </time>
           </span>
 
@@ -246,8 +249,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/16/月影-1-1-1-prime-number/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/月影-1-1-1-prime-number/" itemprop="commentsCount"></span>
+                <a href="/2017/04/14/面试题整理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/14/面试题整理/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -269,11 +272,13 @@
       
 
       
-        <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>编写一个JavaScript函数，判断一个整数是否是素数，如果是，返回true，否则，返回false。</p>
-<h3 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h3><p>除了1和它本身以外不再有其他的因数。根据算术基本定理，每一个比1大的整数，要么本身是一个质数，要么可以写成一系列质数的乘积，最小的质数是2。</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>在一般领域，对正整数n，如果用2到根号n之间的所有整数去除，均无法整除，则n为质数。<br>质数大于等于2 不能被它本身和1以外的数整除。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">IsPrime</span>(<span class="params">testNum</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (testNum &lt; <span class="number">2</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">var</span> len = <span class="built_in">Math</span>.sqrt(testNum);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">2</span>; i &lt;= len; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (testNum % i === <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><a href="https://github.com/athena0304/training/tree/master/1-1-1-prime%20number" target="_blank" rel="external">源码</a></p>
+        <h2 id="new操作符具体做了什么"><a href="#new操作符具体做了什么" class="headerlink" title="new操作符具体做了什么"></a>new操作符具体做了什么</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> func = <span class="keyword">new</span> Func();</div></pre></td></tr></table></figure>
+<p>new共经过了四个阶段</p>
+<h4 id="1-创建一个空对象"><a href="#1-创建一个空对象" class="headerlink" title="1. 创建一个空对象"></a>1. 创建一个空对象</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</div></pre></td></tr></table></figure>
+<h4 id="2-设置原型链"><a href="#2-设置原型链" class="headerlink" title="2. 设置原型链"></a>2. 设置原型链</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">obj.__proto__= Func.prototype;</div></pre></td></tr></table></figure>
+<h4 id="3-让Func中的this指向obj，并执行Func的函数体。"><a href="#3-让Func中的this指向obj，并执行Func的函数体。" class="headerlink" title="3. 让Func中的this指向obj，并执行Func的函数体。"></a>3. 让Func中的this指向obj，并执行Func的函数体。</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> result = Func.call(obj);</div></pre></td></tr></table></figure>
+<h4 id="4-判断Func的返回值类型："><a href="#4-判断Func的返回值类型：" class="headerlink" title="4. 判断Func的返回值类型："></a>4. 判断Func的返回值类型：</h4><p>如果是值类型，返回obj。如果是引用类型，就返回这个引用类型的对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span>(result) == <span class="string">"object"</span>) &#123;</div><div class="line">  func = result;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  func = obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -286,28 +291,18 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Javacscipt/" rel="tag">#Javacscipt</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/14/1-1-2/" rel="next" title="1-1-2">
-                <i class="fa fa-chevron-left"></i> 1-1-2
+              <a href="/2017/04/11/你不知道的js笔记-this和原型/" rel="next" title="你不知道的js笔记-this和原型">
+                <i class="fa fa-chevron-left"></i> 你不知道的js笔记-this和原型
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/16/月影-1-1-3-reverse-string/" rel="prev" title="[月影]1-1-3 reverse string">
-                [月影]1-1-3 reverse string <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -333,8 +328,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/16/月影-1-1-1-prime-number/"
-           data-title="[月影]1-1-1 prime number" data-url="http://yoursite.com/2016/03/16/月影-1-1-1-prime-number/">
+      <div class="ds-thread" data-thread-key="2017/04/14/面试题整理/"
+           data-title="面试题整理" data-url="http://yoursite.com/2017/04/14/面试题整理/">
       </div>
     
   </div>
@@ -423,7 +418,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解读"><span class="nav-number">2.</span> <span class="nav-text">解读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">3.</span> <span class="nav-text">方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#new操作符具体做了什么"><span class="nav-number">1.</span> <span class="nav-text">new操作符具体做了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建一个空对象"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 创建一个空对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-设置原型链"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 设置原型链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-让Func中的this指向obj，并执行Func的函数体。"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 让Func中的this指向obj，并执行Func的函数体。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-判断Func的返回值类型："><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 判断Func的返回值类型：</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
