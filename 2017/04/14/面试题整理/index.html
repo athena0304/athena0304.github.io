@@ -71,7 +71,7 @@ new共经过了四个阶段
 1. 创建一个空对象1var obj = new Object();
 2. 设置原型链1obj.__proto__= Func.prototype;
 3. 让Func中的this指向obj，并执行Func的函数体。1var r">
-<meta property="og:updated_time" content="2017-04-15T10:33:28.000Z">
+<meta property="og:updated_time" content="2017-04-17T14:10:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试题整理">
 <meta name="twitter:description" content="1. new操作符具体做了什么12var Func = function() &amp;#123;&amp;#125;;var func = new Func();
@@ -293,7 +293,7 @@ new共经过了四个阶段
 <p>注：不排除未来会加入同时使用多个伪元素的机制。</p>
 <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements" target="_blank" rel="external">所有伪元素</a></p>
 <p>::after<br>::before<br>::first-letter<br>::first-line<br>::selection</p>
-
+<h2 id="4-找出整形数组中乘积最大的三个数"><a href="#4-找出整形数组中乘积最大的三个数" class="headerlink" title="4. 找出整形数组中乘积最大的三个数"></a>4. 找出整形数组中乘积最大的三个数</h2>
       
     </div>
 
@@ -317,6 +317,10 @@ new共经过了四个阶段
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/24/javascript高级程序设计笔记/" rel="prev" title="javascript高级程序设计笔记">
+                javascript高级程序设计笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -388,7 +392,7 @@ new共经过了四个阶段
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -432,7 +436,7 @@ new共经过了四个阶段
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-new操作符具体做了什么"><span class="nav-number">1.</span> <span class="nav-text">1. new操作符具体做了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建一个空对象"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 创建一个空对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-设置原型链"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 设置原型链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-让Func中的this指向obj，并执行Func的函数体。"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 让Func中的this指向obj，并执行Func的函数体。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-判断Func的返回值类型："><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 判断Func的返回值类型：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-JQuery-中-fn-extend-函数的实现（实现核心代码即可）"><span class="nav-number">2.</span> <span class="nav-text">2. JQuery 中 $.fn.extend 函数的实现（实现核心代码即可）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-伪元素和伪类的区别"><span class="nav-number">3.</span> <span class="nav-text">3. 伪元素和伪类的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#伪类"><span class="nav-number">3.1.</span> <span class="nav-text">伪类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#伪元素"><span class="nav-number">3.2.</span> <span class="nav-text">伪元素</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-new操作符具体做了什么"><span class="nav-number">1.</span> <span class="nav-text">1. new操作符具体做了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建一个空对象"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 创建一个空对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-设置原型链"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 设置原型链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-让Func中的this指向obj，并执行Func的函数体。"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 让Func中的this指向obj，并执行Func的函数体。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-判断Func的返回值类型："><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 判断Func的返回值类型：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-JQuery-中-fn-extend-函数的实现（实现核心代码即可）"><span class="nav-number">2.</span> <span class="nav-text">2. JQuery 中 $.fn.extend 函数的实现（实现核心代码即可）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-伪元素和伪类的区别"><span class="nav-number">3.</span> <span class="nav-text">3. 伪元素和伪类的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#伪类"><span class="nav-number">3.1.</span> <span class="nav-text">伪类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#伪元素"><span class="nav-number">3.2.</span> <span class="nav-text">伪元素</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-找出整形数组中乘积最大的三个数"><span class="nav-number">4.</span> <span class="nav-text">4. 找出整形数组中乘积最大的三个数</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
