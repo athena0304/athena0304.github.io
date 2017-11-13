@@ -213,6 +213,117 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/18/月影-1-5-数组/" itemprop="url">
+                  [月影]1-5 数组
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-18T19:18:53+08:00" content="2016-03-18">
+              2016-03-18
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/18/月影-1-5-数组/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/18/月影-1-5-数组/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><ol>
+<li><p>实现一个函数，找出一个整数数组中最大的奇数和最小的偶数，返回它们的和，如果最大奇数和最小偶数其中一个数不存在，返回null。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> findAndSum = <span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</div><div class="line">    <span class="comment">//先排序，再筛选</span></div><div class="line">    <span class="keyword">var</span> sortArr = arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> b - a; <span class="comment">//降序排列</span></div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> largestOdd, smallestEven;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; sortArr.length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (sortArr[i] % <span class="number">2</span> == <span class="number">1</span>) &#123;</div><div class="line">            largestOdd = sortArr[i];</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = sortArr.length - <span class="number">1</span>; j &gt; <span class="number">0</span>; j--) &#123;</div><div class="line">        <span class="keyword">if</span> (sortArr[j] % <span class="number">2</span> == <span class="number">0</span>) &#123;</div><div class="line">            smallestEven = sortArr[j];</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> largestOdd == <span class="string">"undefined"</span> || <span class="keyword">typeof</span> smallestEven == <span class="string">"undefined"</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> largestOdd + smallestEven;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>实现一个函数，将一个有序的数组完全随机打乱顺序。<br>发现sort这个函数的强大，以前面试动不动就排序。。</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> randomOrder = <span class="function"><span class="keyword">function</span>(<span class="params">arr</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.random() - <span class="number">0.5</span>;</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>找出一个整数数组中任意两个数之和为10的所有结果。</li>
+</ol>
+<blockquote>
+<p>提高查找效率通常可以先将要查找的数组排序，然后用二分查找等方法进行查找，就可以将原来O（N）的查找时间缩短到O（log2N），这样对于每个arr[i]，都要花O（log2N）去查找对应的Sum-arr[i]在不在数组中，总的时间复杂度降低为N<em> log2N。当让将长度为N的数组进行排序本身也需要O（N</em>log2N）的时间，好在只须要排序一次就够了，所以总的时间复杂度依然是O（N*log2N）。</p>
+<p>首先对数组进行排序，时间复杂度为（N*log2N）。然后令i = 0，j = n-1，看arr[i] + arr[j] 是否等于Sum，如果是，则结束。如果小于Sum，则i = i + 1；如果大于Sum，则 j = j – 1。这样只需要在排好序的数组上遍历一次，就可以得到最后的结果，时间复杂度为O（N）。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> findNum10 = <span class="function"><span class="keyword">function</span>(<span class="params">arr,sum</span>) </span>&#123;</div><div class="line">        <span class="comment">//先排序，再筛选</span></div><div class="line">    <span class="keyword">var</span> sortArr = arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> a - b;</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>,j=sortArr.length - <span class="number">1</span>; i&lt;j;)&#123;</div><div class="line">        <span class="keyword">if</span>(sortArr[i] + sortArr[j] == sum)&#123;</div><div class="line">            <span class="built_in">console</span>.log(sortArr[i],sortArr[j]);</div><div class="line">            i++;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sortArr[i] + sortArr[j] &lt; sum)&#123;</div><div class="line">            i++;</div><div class="line">        &#125; <span class="keyword">else</span>&#123;</div><div class="line">            j--;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/16/月影-1-3-类型/" itemprop="url">
                   [月影]1-3 类型
                 </a>
@@ -742,7 +853,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
