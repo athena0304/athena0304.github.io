@@ -57,30 +57,19 @@
 
 
 
-<meta name="description" content="Element-ui升级2.0后初体验
-如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。
-现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：
-
-Element 1.x 已停止维护，请升级至 2.">
+<meta name="description" content="Element-ui升级2.0后初体验 如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。 现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：  Element 1.x 已停止维护，请升级至 2.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Athena">
 <meta property="og:url" content="http://yoursite.com/2017/12/11/Element-ui升级2.0后初体验/index.html">
 <meta property="og:site_name" content="Athena">
-<meta property="og:description" content="Element-ui升级2.0后初体验
-如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。
-现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：
-
-Element 1.x 已停止维护，请升级至 2.">
+<meta property="og:description" content="Element-ui升级2.0后初体验 如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。 现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：  Element 1.x 已停止维护，请升级至 2.">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://segmentfault.com/img/bVY0CM?w=854&h=167">
 <meta property="og:image" content="https://segmentfault.com/img/bVY0CQ?w=905&h=185">
 <meta property="og:updated_time" content="2017-12-11T08:46:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Athena">
-<meta name="twitter:description" content="Element-ui升级2.0后初体验
-如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。
-现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：
-
-Element 1.x 已停止维护，请升级至 2.">
+<meta name="twitter:description" content="Element-ui升级2.0后初体验 如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。 现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：  Element 1.x 已停止维护，请升级至 2.">
 <meta name="twitter:image" content="https://segmentfault.com/img/bVY0CM?w=854&h=167">
 
 
@@ -288,18 +277,18 @@ Element 1.x 已停止维护，请升级至 2.">
 <h4 id="1-引入的css文件路径变了"><a href="#1-引入的css文件路径变了" class="headerlink" title="1. 引入的css文件路径变了"></a>1. 引入的css文件路径变了</h4><p>原来是：<br><code>import &#39;element-ui/lib/theme-default/index.css&#39;</code><br>现在需要修改成：<br><code>import &#39;element-ui/lib/theme-chalk/index.css&#39;</code></p>
 <h4 id="2-样式引入的优先级问题"><a href="#2-样式引入的优先级问题" class="headerlink" title="2. 样式引入的优先级问题"></a>2. 样式引入的优先级问题</h4><p>之前遇到这样一个问题，有的组件样式需要进行定制覆盖，于是就在组件里面用css scoped进行了同类名的样式替换，这样在开发环境下效果是符合预期的，但是打包编译后，优先级就变了。于是发现是在<code>main.js</code>引入文件路径顺序的问题，之前一度以为不需要顺序，但其实还是有影响的。</p>
 <p>原来的配置：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></div><div class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></div><div class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></div><div class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></div><div class="line"></div><div class="line">Vue.use(ElementUI)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></span><br><span class="line"></span><br><span class="line">Vue.use(ElementUI)</span><br></pre></td></tr></table></figure>
 <p>修改后的：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></div><div class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></div><div class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></div><div class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span> <span class="comment">//这里要把App的引用顺序放到最后</span></div><div class="line"></div><div class="line">Vue.use(ElementUI)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span> <span class="comment">//这里要把App的引用顺序放到最后</span></span><br><span class="line"></span><br><span class="line">Vue.use(ElementUI)</span><br></pre></td></tr></table></figure>
 <h4 id="3-Icon的变化"><a href="#3-Icon的变化" class="headerlink" title="3. Icon的变化"></a>3. Icon的变化</h4><p>原来在<code>input</code>组件中可以用<code>icon</code>这个属性指定icon，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;el-input</div><div class="line">  icon=&quot;search&quot;&gt;</div><div class="line">&lt;/el-input&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-input</span><br><span class="line">  icon=&quot;search&quot;&gt;</span><br><span class="line">&lt;/el-input&gt;</span><br></pre></td></tr></table></figure>
 <p>现在的话，这样写是不生效的：</p>
 <blockquote>
 <p>可以通过<code>prefix-icon</code> 和 <code>suffix-icon</code> 属性在 input 组件首部和尾部增加显示图标，也可以通过 slot 来放置图标。</p>
 </blockquote>
 <p>所以如果你在项目中的<code>input</code>里用到了<code>icon</code>的属性，需要改成<code>prefix-icon</code> 或 <code>suffix-icon</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;el-input</div><div class="line">	suffix-icon=&quot;el-icon-search&quot;&gt;</div><div class="line">&lt;/el-input&gt;</div></pre></td></tr></table></figure>
-<p>但是button组件就还是可以使用<code>icon</code>属性，但需要传入完整的图标类名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;el-button type=&quot;primary&quot; icon=&quot;el-icon-search&quot;&gt;搜索&lt;/el-button&gt;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-input</span><br><span class="line">	suffix-icon=&quot;el-icon-search&quot;&gt;</span><br><span class="line">&lt;/el-input&gt;</span><br></pre></td></tr></table></figure>
+<p>但是button组件就还是可以使用<code>icon</code>属性，但需要传入完整的图标类名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-button type=&quot;primary&quot; icon=&quot;el-icon-search&quot;&gt;搜索&lt;/el-button&gt;</span><br></pre></td></tr></table></figure></p>
 <p>原因是：</p>
 <blockquote>
 <p>为了方便使用第三方图标，Button 的 <code>icon</code> 属性、Input 的 <code>prefix-icon</code> 和 <code>suffix-icon</code> 属性、Steps 的 <code>icon</code> 属性现在需要传入完整的图标类名</p>
@@ -348,9 +337,9 @@ Element 1.x 已停止维护，请升级至 2.">
 <p>2.0:</p>
 <p><img src="https://segmentfault.com/img/bVY0CQ?w=905&amp;h=185" alt="clipboard.png"></p>
 <p>所以，原来1.0判断change函数里面是这么写的:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">handleCheckAllChange(event) &#123;</div><div class="line">    this.checkedCities = event.target.checked ? cityOptions : [];</div><div class="line">    this.isIndeterminate = false;</div><div class="line">  &#125;,</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">handleCheckAllChange(event) &#123;</span><br><span class="line">    this.checkedCities = event.target.checked ? cityOptions : [];</span><br><span class="line">    this.isIndeterminate = false;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
 <p>2.0是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">handleCheckAllChange(val) &#123;</div><div class="line">    this.checkedCities = val ? cityOptions : [];</div><div class="line">    this.isIndeterminate = false;</div><div class="line">  &#125;,</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">handleCheckAllChange(val) &#123;</span><br><span class="line">    this.checkedCities = val ? cityOptions : [];</span><br><span class="line">    this.isIndeterminate = false;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
 <p>目前就是这么多，随着项目深入，可能还会遇到更多的问题和兼容版本的问题，我们可以共同探讨。</p>
 
       
@@ -376,6 +365,10 @@ Element 1.x 已停止维护，请升级至 2.">
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/23/promise/" rel="prev" title="Promise">
+                Promise <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -447,7 +440,7 @@ Element 1.x 已停止维护，请升级至 2.">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

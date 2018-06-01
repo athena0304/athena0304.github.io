@@ -57,34 +57,17 @@
 
 
 
-<meta name="description" content="项目结构
-build: 包含构建相关的内置文件。在大多数情况下你不需要去动它们。然而，熟悉一下下面的文件可能会有帮助。
-build/alias.js: 所有的源码和测试用到的模块引入别名
-
-build/config.js: 包含dist/文件夹下面生成的所有文件文件的build配置。这个文件是dist文件夹的源文件生成入口。
-
-dist: 包含分发的构建文件。注意这个目录只会在一个release发">
+<meta name="description" content="项目结构 build: 包含构建相关的内置文件。在大多数情况下你不需要去动它们。然而，熟悉一下下面的文件可能会有帮助。 build/alias.js: 所有的源码和测试用到的模块引入别名  build/config.js: 包含dist/文件夹下面生成的所有文件文件的build配置。这个文件是dist文件夹的源文件生成入口。  dist: 包含分发的构建文件。注意这个目录只会在一个release发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue源码项目">
 <meta property="og:url" content="http://yoursite.com/2017/06/01/vue源码项目/index.html">
 <meta property="og:site_name" content="Athena">
-<meta property="og:description" content="项目结构
-build: 包含构建相关的内置文件。在大多数情况下你不需要去动它们。然而，熟悉一下下面的文件可能会有帮助。
-build/alias.js: 所有的源码和测试用到的模块引入别名
-
-build/config.js: 包含dist/文件夹下面生成的所有文件文件的build配置。这个文件是dist文件夹的源文件生成入口。
-
-dist: 包含分发的构建文件。注意这个目录只会在一个release发">
+<meta property="og:description" content="项目结构 build: 包含构建相关的内置文件。在大多数情况下你不需要去动它们。然而，熟悉一下下面的文件可能会有帮助。 build/alias.js: 所有的源码和测试用到的模块引入别名  build/config.js: 包含dist/文件夹下面生成的所有文件文件的build配置。这个文件是dist文件夹的源文件生成入口。  dist: 包含分发的构建文件。注意这个目录只会在一个release发">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-06-02T07:13:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue源码项目">
-<meta name="twitter:description" content="项目结构
-build: 包含构建相关的内置文件。在大多数情况下你不需要去动它们。然而，熟悉一下下面的文件可能会有帮助。
-build/alias.js: 所有的源码和测试用到的模块引入别名
-
-build/config.js: 包含dist/文件夹下面生成的所有文件文件的build配置。这个文件是dist文件夹的源文件生成入口。
-
-dist: 包含分发的构建文件。注意这个目录只会在一个release发">
+<meta name="twitter:description" content="项目结构 build: 包含构建相关的内置文件。在大多数情况下你不需要去动它们。然而，熟悉一下下面的文件可能会有帮助。 build/alias.js: 所有的源码和测试用到的模块引入别名  build/config.js: 包含dist/文件夹下面生成的所有文件文件的build配置。这个文件是dist文件夹的源文件生成入口。  dist: 包含分发的构建文件。注意这个目录只会在一个release发">
 
 
 
@@ -287,15 +270,15 @@ dist: 包含分发的构建文件。注意这个目录只会在一个release发"
 <li><p><strong><code>dist</code></strong>: 包含分发的构建文件。注意这个目录只会在一个release发布的时候才会更新；在development分支的最新变化不会实时反映出来。</p>
 </li>
 </ul>
-<p>See <a href="https://github.com/vuejs/vue/blob/dev/dist/README.md" target="_blank" rel="external">dist/README.md</a> for more details on dist files.</p>
+<p>See <a href="https://github.com/vuejs/vue/blob/dev/dist/README.md" target="_blank" rel="noopener">dist/README.md</a> for more details on dist files.</p>
 <ul>
-<li><p><strong><code>flow</code></strong>: 包含类型声明，用的是 <a href="https://flowtype.org/" target="_blank" rel="external">Flow</a>. 这些声明都是<strong>全局</strong>加载的，所以你会看到它们在源码中类型注释的使用。</p>
+<li><p><strong><code>flow</code></strong>: 包含类型声明，用的是 <a href="https://flowtype.org/" target="_blank" rel="noopener">Flow</a>. 这些声明都是<strong>全局</strong>加载的，所以你会看到它们在源码中类型注释的使用。</p>
 </li>
 <li><p><strong><code>packages</code></strong>: 包含 <code>vue-server-renderer</code> 和 <code>vue-template-compiler</code>,是分离的NPM包。它们都是从源码里自动生成的，并且与main <code>vue</code> package有着同样的版本。</p>
 </li>
-<li><p><strong><code>test</code></strong>: 包含所有的测试. The unit tests are written with <a href="http://jasmine.github.io/2.3/introduction.html" target="_blank" rel="external">Jasmine</a> and run with <a href="http://karma-runner.github.io/0.13/index.html" target="_blank" rel="external">Karma</a>. The e2e tests are written for and run with <a href="http://nightwatchjs.org/" target="_blank" rel="external">Nightwatch.js</a>.</p>
+<li><p><strong><code>test</code></strong>: 包含所有的测试. The unit tests are written with <a href="http://jasmine.github.io/2.3/introduction.html" target="_blank" rel="noopener">Jasmine</a> and run with <a href="http://karma-runner.github.io/0.13/index.html" target="_blank" rel="noopener">Karma</a>. The e2e tests are written for and run with <a href="http://nightwatchjs.org/" target="_blank" rel="noopener">Nightwatch.js</a>.</p>
 </li>
-<li><p><strong><code>src</code></strong>: contains the source code, obviously. The codebase is written in ES2015 with <a href="https://flowtype.org/" target="_blank" rel="external">Flow</a> type annotations.</p>
+<li><p><strong><code>src</code></strong>: contains the source code, obviously. The codebase is written in ES2015 with <a href="https://flowtype.org/" target="_blank" rel="noopener">Flow</a> type annotations.</p>
 <ul>
 <li><p><strong><code>compiler</code></strong>: contains code for the template-to-render-function compiler.</p>
 <p>The compiler consists of a parser (converts template strings to element ASTs), an optimizer (detects static trees for vdom render optimization), and a code generator (generate render function code from element ASTs). Note the codegen directly generates code strings from the element AST - it’s done this way for smaller code size because the compiler is shipped to the browser in the standalone build.</p>
@@ -427,7 +410,7 @@ dist: 包含分发的构建文件。注意这个目录只会在一个release发"
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
