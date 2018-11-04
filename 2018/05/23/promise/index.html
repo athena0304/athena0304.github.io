@@ -116,13 +116,10 @@
 <meta property="og:site_name" content="Athena">
 <meta property="og:description" content="原文：Promise 想象一下，你是一个顶级歌手，你的粉丝们成天管要你的下一张专辑。为了得到解脱，你向他们承诺，一旦专辑发行了就会立即寄给他们。你给粉丝们一张表让他们填写地址，这样一来一旦歌曲发行了，所有预定的人都能马上拿到。如果发生了什么意外，比如歌曲再也不会发行了，他们也会收到通知。 这样就皆大欢喜了，再也不会有人来烦你了，粉丝们也不会错过你的专辑单曲。 以上是一个真实世界的类比，我们在编程的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2018/05/23/promise/promise-resolve-reject.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/23/promise/promise-resolve-1.png">
 <meta property="og:updated_time" content="2018-11-01T03:10:04.733Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译]Promise-basics">
 <meta name="twitter:description" content="原文：Promise 想象一下，你是一个顶级歌手，你的粉丝们成天管要你的下一张专辑。为了得到解脱，你向他们承诺，一旦专辑发行了就会立即寄给他们。你给粉丝们一张表让他们填写地址，这样一来一旦歌曲发行了，所有预定的人都能马上拿到。如果发生了什么意外，比如歌曲再也不会发行了，他们也会收到通知。 这样就皆大欢喜了，再也不会有人来烦你了，粉丝们也不会错过你的专辑单曲。 以上是一个真实世界的类比，我们在编程的">
-<meta name="twitter:image" content="http://yoursite.com/2018/05/23/promise/promise-resolve-reject.png">
 
 
 
@@ -450,7 +447,7 @@
 </ul>
 </li>
 </ul>
-<img src="/2018/05/23/promise/promise-resolve-reject.png">
+
 <p>下面是一个简单的执行者的例子，</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 当promise被构造的时候，这个函数就被立即执行</span></span><br><span class="line"></span><br><span class="line">  alert(resolve); <span class="comment">// function () &#123; [native code] &#125;</span></span><br><span class="line">  alert(reject);  <span class="comment">// function () &#123; [native code] &#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1秒之后这个任务完成，输出结果"done!"</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> resolve(<span class="string">"done!"</span>), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>通过运行上面的代码，我们可以看出两件事情：</p>
@@ -459,7 +456,7 @@
 <li>执行者接收两个参数：<code>resolve</code> 和 <code>reject</code> – 这些函数来自JavaScript引擎。我们不需要去创建它们。而且该由执行者来调用它们。</li>
 </ol>
 <p>1秒之后，执行者调用<code>resolve(&quot;done&quot;)</code>生成结果：</p>
-<img src="/2018/05/23/promise/promise-resolve-1.png">
+
 <p>这是任务成功完成的一个例子。</p>
 <p>现在再看一个执行者抛出异常的例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1秒之后任务结束，抛出异常</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Whoops!"</span>)), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
@@ -643,7 +640,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-count">22</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

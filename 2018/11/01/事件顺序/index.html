@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Event orderOn the Introduction to events page I asked a question that at first sight seems incomprehensible: “If an element and one of its ancestors have an event handler for the same event, which one">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件顺序">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/事件顺序/index.html">
+<meta property="og:site_name" content="Athena">
+<meta property="og:description" content="Event orderOn the Introduction to events page I asked a question that at first sight seems incomprehensible: “If an element and one of its ancestors have an event handler for the same event, which one">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-01T03:34:12.178Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="事件顺序">
+<meta name="twitter:description" content="Event orderOn the Introduction to events page I asked a question that at first sight seems incomprehensible: “If an element and one of its ancestors have an event handler for the same event, which one">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/01/事件顺序/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>事件顺序 | Athena</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?15fcb8c2aa27ecb358060d2600aa2502";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Athena</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">雯子写字的地方</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/athena0304" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/01/事件顺序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">事件顺序
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-01 11:32:50 / 修改时间：11:34:12" itemprop="dateCreated datePublished" datetime="2018-11-01T11:32:50+08:00">2018-11-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Event-order"><a href="#Event-order" class="headerlink" title="Event order"></a>Event order</h1><p>On the <a href="https://www.quirksmode.org/js/introevents.html" target="_blank" rel="noopener">Introduction to events</a> page I asked a question that at first sight seems incomprehensible: “If an element and one of its ancestors have an event handler for the same event, which one should fire first?” Not surprisingly, this depends on the browser.</p>
+<p>The basic problem is very simple. Suppose you have a element inside an element</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-----------------------------------</span><br><span class="line">| element1                        |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|   |element2               |     |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|                                 |</span><br><span class="line">-----------------------------------</span><br></pre></td></tr></table></figure>
+<p>and both have an onClick event handler. If the user clicks on element2 he causes a click event in both element1 and element2. But which event fires first? Which event handler should be executed first? What, in other words, is the <em>event order</em>?</p>
+<h3 id="Two-models"><a href="#Two-models" class="headerlink" title="Two models"></a>Two models</h3><p>Not surprisingly, back in the bad old days Netscape and Microsoft came to different conclusions.</p>
+<ul>
+<li>Netscape said that the event on element1 takes place first. This is called event <em>capturing</em>.</li>
+<li>Microsoft maintained that the event on element2 takes precedence. This is called event <em>bubbling</em>.</li>
+</ul>
+<p>The two event orders are radically opposed. Explorer only supports event bubbling. Mozilla, Opera 7 and Konqueror support both. Older Opera’s and iCab support neither.</p>
+<h4 id="Event-capturing"><a href="#Event-capturing" class="headerlink" title="Event capturing"></a>Event capturing</h4><p>When you use event capturing</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">               | |</span><br><span class="line">---------------| |-----------------</span><br><span class="line">| element1     | |                |</span><br><span class="line">|   -----------| |-----------     |</span><br><span class="line">|   |element2  \ /          |     |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|        Event CAPTURING          |</span><br><span class="line">-----------------------------------</span><br></pre></td></tr></table></figure>
+<p>the event handler of element1 fires first, the event handler of element2 fires last.</p>
+<h4 id="Event-bubbling"><a href="#Event-bubbling" class="headerlink" title="Event bubbling"></a>Event bubbling</h4><p>When you use event bubbling</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">               / \</span><br><span class="line">---------------| |-----------------</span><br><span class="line">| element1     | |                |</span><br><span class="line">|   -----------| |-----------     |</span><br><span class="line">|   |element2  | |          |     |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|        Event BUBBLING           |</span><br><span class="line">-----------------------------------</span><br></pre></td></tr></table></figure>
+<p>the event handler of element2 fires first, the event handler of element1 fires last.</p>
+<h3 id="W3C-model"><a href="#W3C-model" class="headerlink" title="W3C model"></a>W3C model</h3><p>W3C has very sensibly decided to take a middle position in this struggle. Any event taking place in the <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/" target="_blank" rel="noopener">W3C event model</a> is first captured until it reaches the target element and then bubbles up again.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">                 | |  / \</span><br><span class="line">-----------------| |--| |-----------------</span><br><span class="line">| element1       | |  | |                |</span><br><span class="line">|   -------------| |--| |-----------     |</span><br><span class="line">|   |element2    \ /  | |          |     |</span><br><span class="line">|   --------------------------------     |</span><br><span class="line">|        W3C event model                 |</span><br><span class="line">------------------------------------------</span><br></pre></td></tr></table></figure>
+<p>You, the web developer, can choose whether to register an event handler in the capturing or in the bubbling phase. This is done through the <code>addEventListener()</code> method explained on the <a href="https://www.quirksmode.org/js/events_advanced.html" target="_blank" rel="noopener">Advanced models</a> page. If its last argument is <code>true</code> the event handler is set for the capturing phase, if it is<code>false</code> the event handler is set for the bubbling phase.</p>
+<p>Suppose you do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.addEventListener(&apos;click&apos;,doSomething2,true)</span><br><span class="line">element2.addEventListener(&apos;click&apos;,doSomething,false)</span><br></pre></td></tr></table></figure>
+<p>If the user clicks on element2 the following happens:</p>
+<ol>
+<li>The <code>click</code> event starts in the capturing phase. The event looks if any ancestor element of element2 has a <code>onclick</code> event handler for the capturing phase.</li>
+<li>The event finds one on element1. <code>doSomething2()</code> is executed.</li>
+<li>The event travels down to the target itself, no more event handlers for the capturing phase are found. The event moves to its bubbling phase and executes <code>doSomething()</code>, which is registered to element2 for the bubbling phase.</li>
+<li>The event travels upwards again and checks if any ancestor element of the target has an event handler for the bubbling phase. This is not the case, so nothing happens.</li>
+</ol>
+<p>The reverse would be</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.addEventListener(&apos;click&apos;,doSomething2,false)</span><br><span class="line">element2.addEventListener(&apos;click&apos;,doSomething,false)</span><br></pre></td></tr></table></figure>
+<p>Now if the user clicks on element2 the following happens:</p>
+<ol>
+<li>The <code>click</code> event starts in the capturing phase. The event looks if any ancestor element of element2 has a <code>onclick</code> event handler for the capturing phase and doesn’t find any.</li>
+<li>The event travels down to the target itself. The event moves to its bubbling phase and executes <code>doSomething()</code>, which is registered to element2 for the bubbling phase.</li>
+<li>The event travels upwards again and checks if any ancestor element of the target has an event handler for the bubbling phase.</li>
+<li>The event finds one on element1. Now <code>doSomething2()</code> is executed.</li>
+</ol>
+<h4 id="Compatibility-with-traditional-model"><a href="#Compatibility-with-traditional-model" class="headerlink" title="Compatibility with traditional model"></a>Compatibility with traditional model</h4><p>In the browsers that support the W3C DOM, a traditional event registration</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element1.onclick = doSomething2;</span><br></pre></td></tr></table></figure>
+<p>is seen as a registration in the <em>bubbling phase</em>.</p>
+<h3 id="Use-of-event-bubbling"><a href="#Use-of-event-bubbling" class="headerlink" title="Use of event bubbling"></a>Use of event bubbling</h3><p>Few web developers consciously use event capturing or bubbling. In Web pages as they are made today, it is simply not necessary to let a bubbling event be handled by several different event handlers. Users might get confused by several things happening after one mouse click, and usually you want to keep your event handling scripts separated. When the user clicks on an element, something happens, when he clicks on another element, something else happens.</p>
+<p>Of course this might change in the future, and it’s good to have models available that are forward compatible. But the main practical use of event capturing and bubbling today is the registration of default functions.</p>
+<h3 id="It-always-happens"><a href="#It-always-happens" class="headerlink" title="It always happens"></a>It always happens</h3><p>What you first need to understand is that event capturing or bubbling always happens. If you define a general onclick event handler for your entire document</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">document.onclick = doSomething;</span><br><span class="line">if (document.captureEvents) document.captureEvents(Event.CLICK);</span><br></pre></td></tr></table></figure>
+<p>any <code>click</code> event on any element in the document will eventually bubble up to the document and thus fire this general event handler. Only when a previous event handling script explicitly orders the event to stop bubbling, it will not propagate to the document.</p>
+<h3 id="Uses"><a href="#Uses" class="headerlink" title="Uses"></a>Uses</h3><p>Because any event ends up on the document, default event handlers become possible. Suppose you have this page:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">------------------------------------</span><br><span class="line">| document                         |</span><br><span class="line">|   ---------------  ------------  |</span><br><span class="line">|   | element1    |  | element2 |  |</span><br><span class="line">|   ---------------  ------------  |</span><br><span class="line">|                                  |</span><br><span class="line">------------------------------------</span><br><span class="line"></span><br><span class="line">element1.onclick = doSomething;</span><br><span class="line">element2.onclick = doSomething;</span><br><span class="line">document.onclick = defaultFunction;</span><br></pre></td></tr></table></figure>
+<p>Now if the user clicks on element1 or 2, <code>doSomething()</code> is executed. You can stop the event propagation here, if you wish. If you don’t the event bubbles up to <code>defaultFunction()</code>. If the user clicks anywhere else <code>defaultFunction()</code> is also executed. This might be useful sometimes.</p>
+<p>Setting document–wide event handlers is necessary in drag–and–drop scripts. Typically a <code>mousedown</code> event on a layer selects this layer and makes it respond to the <code>mousemove</code> event. Though the <code>mousedown</code> is usually registered on the layer to avoid browser bugs, both other event handlers must be document–wide.</p>
+<p>Remember the First Law of Browserology: anything can happen, and it usually does when you’re least prepared for it. So it may happen that the user moves his mouse very wildly and the script doesn’t keep up so that the mouse is not over the layer any more.</p>
+<ul>
+<li>If the <code>onmousemove</code> event handler is registered to the layer, the layer doesn’t react to the mouse movement any more, causing confusion.</li>
+<li>If the <code>onmouseup</code> event handler is registered on the layer, this event isn’t caught either so that the layer keeps reacting to the mouse movements even after the user thinks he dropped the layer. This causes even more confusion.</li>
+</ul>
+<p>So in this case event bubbling is very useful because registering your event handlers on document level makes sure they’re always executed.</p>
+<h3 id="Turning-it-off"><a href="#Turning-it-off" class="headerlink" title="Turning it off"></a>Turning it off</h3><p>But usually you want to turn all capturing and bubbling off to keep functions from interfering with each other. Besides, if your document structure is very complex (lots of nested tables and such) you may save system resources by turning off bubbling. The browser has to go through every single ancestor element of the event target to see if it has an event handler. Even if none are found, the search still takes time.</p>
+<p>In the Microsoft model you must set the event’s <code>cancelBubble</code> property to true.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.event.cancelBubble = true</span><br></pre></td></tr></table></figure>
+<p>In the W3C model you must call the event’s <code>stopPropagation()</code> method. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e.stopPropagation()</span><br></pre></td></tr></table></figure>
+<p>This stops all propagation of the event in the bubbling phase. For a complete cross-browser experience do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function doSomething(e)</span><br><span class="line">&#123;</span><br><span class="line">	if (!e) var e = window.event;</span><br><span class="line">	e.cancelBubble = true;</span><br><span class="line">	if (e.stopPropagation) e.stopPropagation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setting the <code>cancelBubble</code> property in browsers that don’t support it doesn’t hurt. The browser shrugs and creates the property. Of course it doesn’t actually cancel the bubbling, but the assignment itself is safe.</p>
+<h3 id="currentTarget"><a href="#currentTarget" class="headerlink" title="currentTarget"></a>currentTarget</h3><p>As we’ve seen earlier, an event has a <code>target</code> or <code>srcElement</code> that contains a reference to the element the event happened on. In our example this is element2, since the user clicked on it.</p>
+<p>It is very important to understand that during the capturing and bubbling phases (if any) this target does not change: it always remains a reference to element2.</p>
+<p>But suppose we register these event handlers:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.onclick = doSomething;</span><br><span class="line">element2.onclick = doSomething;</span><br></pre></td></tr></table></figure>
+<p>If the user clicks on element2 <code>doSomething()</code> is executed twice. But how do you know which HTML element is currently handling the event? <code>target/srcElement</code> don’t give a clue, they always refer to element2 since it is the original source of the event.</p>
+<p>To solve this problem W3C has added the <code>currentTarget</code> property. It contains a reference to the HTML element the event is currently being handled by: exactly what we need. Unfortunately the Microsoft model doesn’t contain a similar property.</p>
+<p>You can also use <a href="https://www.quirksmode.org/js/this.html" target="_blank" rel="noopener">the <code>this</code> keyword</a>. In the example above it refers to the HTML element the event is handled on, just like <code>currentTarget</code>.</p>
+<h3 id="Problems-of-the-Microsoft-model"><a href="#Problems-of-the-Microsoft-model" class="headerlink" title="Problems of the Microsoft model"></a>Problems of the Microsoft model</h3><p>But when you use the Microsoft event registration model the <code>this</code> keyword doesn’t refer to the HTML element. Combined with the lack of a <code>currentTarget</code>–like property in the Microsoft model, this means that if you do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.attachEvent(&apos;onclick&apos;,doSomething)</span><br><span class="line">element2.attachEvent(&apos;onclick&apos;,doSomething)</span><br></pre></td></tr></table></figure>
+<p>you <em>cannot</em> know which HTML element currently handles the event. This is the most serious problem with the Microsoft event registration model and for me it’s reason enough never to use it, not even in IE/Win only applications.</p>
+<p>I hope Microsoft will soon add a <code>currentTarget</code>–like property — or maybe even follow the standard? Web developers need this information.</p>
+<h3 id="Continue"><a href="#Continue" class="headerlink" title="Continue"></a>Continue</h3><p>If you wish to go through all event pages in order, you should now continue with the <a href="https://www.quirksmode.org/js/events_mouse.html" target="_blank" rel="noopener">Mouse events</a> page.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_079b3d1ee299_258.jpg" alt="雯子 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>更多内容请关注我的公众号-雯子推</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/29/addEventListener/" rel="next" title="一个由addEventListener参数问题所引发的阅读">
+                <i class="fa fa-chevron-left"></i> 一个由addEventListener参数问题所引发的阅读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/03/词法环境/" rel="prev" title="词法环境">
+                词法环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="雯子" />
+            
+              <p class="site-author-name" itemprop="name">雯子</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/athena0304" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Event-order"><span class="nav-number">1.</span> <span class="nav-text">Event order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Two-models"><span class="nav-number">1.0.1.</span> <span class="nav-text">Two models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Event-capturing"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">Event capturing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Event-bubbling"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">Event bubbling</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#W3C-model"><span class="nav-number">1.0.2.</span> <span class="nav-text">W3C model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Compatibility-with-traditional-model"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Compatibility with traditional model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-of-event-bubbling"><span class="nav-number">1.0.3.</span> <span class="nav-text">Use of event bubbling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#It-always-happens"><span class="nav-number">1.0.4.</span> <span class="nav-text">It always happens</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uses"><span class="nav-number">1.0.5.</span> <span class="nav-text">Uses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Turning-it-off"><span class="nav-number">1.0.6.</span> <span class="nav-text">Turning it off</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#currentTarget"><span class="nav-number">1.0.7.</span> <span class="nav-text">currentTarget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problems-of-the-Microsoft-model"><span class="nav-number">1.0.8.</span> <span class="nav-text">Problems of the Microsoft model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Continue"><span class="nav-number">1.0.9.</span> <span class="nav-text">Continue</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雯子</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

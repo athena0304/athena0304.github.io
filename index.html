@@ -320,6 +320,542 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/04/examples/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/04/examples/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-04 16:11:09" itemprop="dateCreated datePublished" datetime="2018-11-04T16:11:09+08:00">2018-11-04</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="【译】通过例子解释-Debounce-和-Throttle"><a href="#【译】通过例子解释-Debounce-和-Throttle" class="headerlink" title="【译】通过例子解释 Debounce 和 Throttle"></a>【译】通过例子解释 Debounce 和 Throttle</h1><p><strong>Debounce</strong> 和 <strong>Throttle</strong> 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。</p>
+<p>当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能会有变化。</p>
+<p>下面我们以滚动事件举例：</p>
+<iframe height="265" scrolling="no" title="Scroll events counter" src="//codepen.io/athena0304/embed/Yjbqar/?height=265&theme-id=0&default-tab=css,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/athena0304/pen/Yjbqar/" target="_blank" rel="noopener">Scroll events counter</a> by Athena (<a href="https://codepen.io/athena0304" target="_blank" rel="noopener">@athena0304</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+<p>当使用触控板、鼠标滚轮，或者直接拽动滚动条，每秒都可以轻易触发至少30次事件，而且在触屏的移动端，甚至会达到每秒100次，面对这样高的执行频率，你的滚动事件处理程序能否很好地应对？</p>
+<p>在2011年，Twitter 网站提出了一个 issue：当向下滚动 Twitter 信息流的时候，整个页面的响应速度都会变慢。 John Resig 基于该问题发表了一篇<a href="http://ejohn.org/blog/learning-from-twitter" target="_blank" rel="noopener">博客</a>，文中指出，直接在 <code>scroll</code> 事件里挂载一些计算量大的函数是件多么不明智的行为。</p>
+<p>John 当时提出的解决方案是在 <code>onScroll event</code> 的外部设置一个每 250ms 执行一次的循环。这样处理程序就与事件解耦了。使用这样一个简单的技术就可以避免破坏用户体验。</p>
+<p>::: tip 译者注</p>
+<p>文中的核心代码如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> outerPane = $details.find(<span class="string">".details-pane-outer"</span>),</span><br><span class="line">    didScroll = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">$(<span class="built_in">window</span>).scroll(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    didScroll = <span class="literal">true</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( didScroll ) &#123;</span><br><span class="line">        didScroll = <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">// Check your page position and then</span></span><br><span class="line">        <span class="comment">// Load in more results</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;, <span class="number">250</span>);</span><br></pre></td></tr></table></figure>
+<p>:::</p>
+<p>如今，处理事件的方式稍微复杂了一些。下面我们结合用例，一一介绍 Debounce、 Throttle 和requestAnimationFrame。</p>
+<h3 id="Debounce"><a href="#Debounce" class="headerlink" title="Debounce"></a>Debounce</h3><p>Debounce 允许我们将多个连续的调用合并成一个。</p>
+<p><img src="https://css-tricks.com/wp-content/uploads/2016/04/debounce.png" alt="img"></p>
+<p>想象一个进电梯的场景，你走进了电梯，门刚要关上，这时另一个人想要进来，于是电梯没有移动楼层（处理函数），而是将门打开让那个人进来。这时又有一个人要进来，就又会上演刚才那一幕。也就是说，电梯延迟了它的函数（移动楼层）执行，但是优化了资源。</p>
+<p>在下面的例子中，尝试快速点击按钮或者在上面滑动：</p>
+<iframe height="265" scrolling="no" title="Debounce. Trailing" src="//codepen.io/athena0304/embed/NBVjRB/?height=265&theme-id=0&default-tab=css,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/athena0304/pen/NBVjRB/" target="_blank" rel="noopener">Debounce. Trailing</a> by Athena (<a href="https://codepen.io/athena0304" target="_blank" rel="noopener">@athena0304</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+<p>你可以看到连续快速事件是怎样被一个单独的 debounce 事件所替代的。但是如果事件触发时间间隔较长，就不会发生 debounce。</p>
+<h4 id="Leading-边缘-或者-“immediate”"><a href="#Leading-边缘-或者-“immediate”" class="headerlink" title="Leading 边缘 (或者 “immediate”)"></a>Leading 边缘 (或者 “immediate”)</h4><p>在上面的例子中，你会发现 debounce 事件会等到快速事件停止发生后才会触发函数执行。为什么不在每次一开始就立即触发函数执行呢，这样它的表现就和原始的没有去抖的处理器一样了。直到快速调用出现停顿的时候，才会再次触发。</p>
+<p>下面是使用 <code>leading</code> 标识符的例子：</p>
+<p><img src="https://css-tricks.com/wp-content/uploads/2016/04/debounce-leading.png" alt="img"></p>
+<p>在 underscore.js 中，该选项叫作 <code>immediate</code> ，而不是  <code>leading</code>。</p>
+<p>自己试一下：</p>
+<iframe height="265" scrolling="no" title="Debounce. Leading" src="//codepen.io/athena0304/embed/mGbgGo/?height=265&theme-id=0&default-tab=css,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/athena0304/pen/mGbgGo/" target="_blank" rel="noopener">Debounce. Leading</a> by Athena (<a href="https://codepen.io/athena0304" target="_blank" rel="noopener">@athena0304</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h4 id="Debounce-的实现"><a href="#Debounce-的实现" class="headerlink" title="Debounce 的实现"></a>Debounce 的实现</h4><p>Debounce 的概念和实现最早是由 <a href="http://unscriptable.com/2009/03/20/debouncing-javascript-methods/" target="_blank" rel="noopener">John Hann</a> 在2009年提出来的。</p>
+<p>不久之后，Ben Alman 就写了一个 <a href="http://benalman.com/projects/jquery-throttle-debounce-plugin/" target="_blank" rel="noopener">jQuery 插件</a>（现在已经不再维护了），一年之后 Jeremy Ashkenas 把它添加进了 underscore.js。再后来被添加进 Lodash。</p>
+<p>这三个实现在内部有一点不同，但是接口几乎是相同的。</p>
+<p>曾经有一段时间，underscore 采取了 Lodash 里面的 debounce/throttle 实现，但是后来我在2013年发现了  <code>_.debounce</code> 函数的一个 bug。从那时起，这两种实现就出现分化了。</p>
+<p>Lodash 为  <code>_.debounce</code> 和 <code>_.throttle</code>  添加了更多的特性。最初的  <code>immediate</code> 标识符被 <code>leading</code> 和 <code>trailing</code>所替代。你可以选择一个选项，也可以两个都要。默认情况下 <code>trailing</code> 是被开启的。</p>
+<p>新的  <code>maxWait</code> 选项（目前只存在于Lodash）在本文中没有提及，但是它也是一个很有用的选项。实际上，throttle 函数就是使用  <code>_.debounce</code> 带着 <code>maxWait</code> 的选项来定义的，你可以在这里查看<a href="https://github.com/lodash/lodash/blob/4.8.0-npm/throttle.js" target="_blank" rel="noopener">源码</a>。</p>
+<h4 id="Debounce-举例"><a href="#Debounce-举例" class="headerlink" title="Debounce 举例"></a>Debounce 举例</h4><h5 id="Resize-举例"><a href="#Resize-举例" class="headerlink" title="Resize 举例"></a>Resize 举例</h5><p>通过拖拽浏览器窗口，可以触发很多次 <code>resize</code> 事件。</p>
+<p>例子如下：</p>
+<iframe height="265" scrolling="no" title="Debounce Resize Event Example" src="//codepen.io/athena0304/embed/KxPLZy/?height=265&theme-id=0&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/athena0304/pen/KxPLZy/" target="_blank" rel="noopener">Debounce Resize Event Example</a> by Athena (<a href="https://codepen.io/athena0304" target="_blank" rel="noopener">@athena0304</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe><br>可以看到，我们在 resize 事件上使用的是默认的  <code>trailing</code> 选项，因为我们只需要关心用户停止调整浏览器后的最终结果就可以了。<br><br>##### 敲击键盘，通过 Ajax 请求自动填充表单<br><br>为什么要在用户还在输入的时候每隔 50ms 就发送一次 Ajax请求？<code>_.debounce</code> 可以帮助我们避免额外的开销，只有当用户停止输入了再发送请求。<br><br>这里没有必要设置  <code>leading</code>，我们是想要等到最后一个字符输入完再执行函数的。<br><br><iframe height="265" scrolling="no" title="Debouncing keystrokes Example" src="//codepen.io/athena0304/embed/NLKVZw/?height=265&theme-id=0&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/athena0304/pen/NLKVZw/" target="_blank" rel="noopener">Debouncing keystrokes Example</a> by Athena (<a href="https://codepen.io/athena0304" target="_blank" rel="noopener">@athena0304</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe><br>还有一个类似的使用场景就是表单校验，当用户输入完再进行校验、提示信息等。<br><br>#### 如何使用 debounce 和 throttle，以及常见问题<br><br>说了这么多，你可能已经想自己来写 debounce/throttle 函数了，或者是从网上随便一篇博客上拷贝一份下来。<strong>但是我给你的建议是直接使用 underscore 或者 Lodash。</strong> 如果你只是需要 <code>_.debounce</code> 和 <code>_.throttle</code> 函数，可以使用 <a href="https://lodash.com/custom-builds" target="_blank" rel="noopener">Lodash custom builder</a> 来输出一个自定义的压缩后为 2KB 的库。可以使用下列命令来进行构建：<br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i -g lodash-cli</span><br><span class="line">lodash include = debounce, throttle</span><br></pre></td></tr></table></figure><br><br>也就是说，最好是使用模块化的形式，通过 webpack/browserify/rollup 来引用，如 <code>lodash/throttle</code> 和 <code>lodash/debounce</code> 或 <code>lodash.throttle</code> 和 <code>lodash.debounce</code> 。<br><br>使用 <code>_.debounce</code> 函数的一个常见错误就是多次调用它：<br><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误</span></span><br><span class="line">$(<span class="built_in">window</span>).on(<span class="string">'scroll'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   _.debounce(doSomething, <span class="number">300</span>); </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确</span></span><br><span class="line">$(<span class="built_in">window</span>).on(<span class="string">'scroll'</span>, _.debounce(doSomething, <span class="number">200</span>));</span><br></pre></td></tr></table></figure><br><br>为 debounced 函数创建一个变量可以让我们调用私有函数 <code>debounced_version.cancel()</code>，如果有需要，lodash 和 underscore.js 都可以供你使用。<br><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> debounced_version = _.debounce(doSomething, <span class="number">200</span>);</span><br><span class="line">$(<span class="built_in">window</span>).on(<span class="string">'scroll'</span>, debounced_version);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果你需要的话</span></span><br><span class="line">debounced_version.cancel();</span><br></pre></td></tr></table></figure><br><br>### Throttle<br><br>使用 <code>_.throttle</code> 则不允许函数每 X 毫秒的执行次数超过一次。<br><br>Throttle 和 debounce 最主要的区别就是 throttle 保证函数每 X 毫秒至少执行一次。<br><br>和 debounce 一样， throttle 也用在了 Ben 的插件、underscore.js 和 lodash里面。<br><br>#### Throttling 举例<br><br>##### 无限滚动<br><br>这是一个非常常见的例子。用户在一个无限滚动的页面里向下滚动，你需要知道当前滚动的位置距离底部还有多远，如果接近底部了，我们就得通过 Ajax 请求获取更多的内容，将其添加到页面里。<br><br>此时我们之前的 <code>_.debounce</code> 就派不上作用了。使用 debounce 只有当用户停止滚动时才能触发，而我们需要的是在用户滚动到底部之前就开始获取内容。<br><br>使用 <code>_.throttle</code> 就能确保实时检查距离底部还有多远。<br><br>### requestAnimationFrame (rAF)<br><br><code>requestAnimationFrame</code> 是另一种限制函数执行速度的方法。<br><br>它可以被看做 <code>_.throttle(dosomething, 16)</code>。但它有着更高的保真度，因为它是浏览器的原生 API，有着更好的精度。<br><br>我们可以使用 rAF API，作为 throttle 函数的替代，考虑下面的优缺点：<br><br>#### 优点<br><br>- 目标是 60fps（每帧 16ms），但是会在浏览器内部决定如何安排渲染的最佳时机。<br>- 非常简单，而且是标准 API，在未来也不会改变。更少的维护成本。<br><br>#### 缺点<br><br>- rAFs 的开始/取消由我们自己来管理，而不像  <code>.debounce</code> 和 <code>.throttle</code> 是在内部管理的。<br>- 如果浏览器的 tab 页面不活跃了，它就不会再执行。<br>- 虽然所有的现代浏览器都提供了 rAF， 但是 IE9、Opera Mini 和一些老的安卓版本还不支持。如果需要，现在还是要使用 <a href="http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/" target="_blank" rel="noopener">polyfill</a> 。<br>- Node.js 不支持 rAF，所以不能在服务端用于 throttle 文件系统事件。<br><br>根据经验，如果你的 JavaScript 函数是在绘制或者直接改变属性，所有涉及到元素位置重新计算的，我会建议使用  <code>requestAnimationFrame</code>，<br><br>如果是处理 Ajax 请求，或者决定是否添加/删除某个 class（可能会触发一个 CSS 动画），我会考虑 <code>_.debounce</code> 和 <code>_.throttle</code>，这里可以设置更低一些的执行速度（例如 200ms，而不是16ms）。<br><br>这时你可能会想，为什不把 rAF 集成到 underscore 或 lodash 里呢，那他俩都是拒绝的，因为这只是一个特殊的使用场景，而且已经足够简单，可以被直接调用。<br><br>#### rAF 举例<br><br>受<a href="http://www.html5rocks.com/en/tutorials/speed/animations/" target="_blank" rel="noopener">这篇文章</a>的启发，在这里我会举一个滚动的例子，在这篇文章中有每个步骤的逻辑解释。<br><br>我做了一个对比实验，一边是 rAF，一边是 16ms 间隔的 <code>_.throttle</code>。它们性能很相似，但是 rAF 可能会在更复杂的场景下性能更高一些。<br><br><iframe height="265" scrolling="no" title="Scroll comparison requestAnimationFrame vs throttle" src="//codepen.io/dcorb/embed/pgOKKw/?height=265&theme-id=0&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/dcorb/pen/pgOKKw/" target="_blank" rel="noopener">Scroll comparison requestAnimationFrame vs throttle</a> by Corbacho (<a href="https://codepen.io/dcorb" target="_blank" rel="noopener">@dcorb</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+<p>还有一个更高级的例子，在 headroom.js 中，逻辑被<a href="https://github.com/WickyNilliams/headroom.js/blob/3282c23bc69b14f21bfbaf66704fa37b58e3241d/src/Debouncer.js" target="_blank" rel="noopener">解耦</a>了，并且包裹在了对象中。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>使用 debounce、throttle 和  <code>requestAnimationFrame</code>  来优化你的事件处理程序。每种技术都有些许的不同，但是三个都是很有用的，而且能够互补。</p>
+<p>总结：</p>
+<ul>
+<li><strong>debounce</strong>：将一系列迅速触发的事件（例如敲击键盘）合并成一个单独的事件。</li>
+<li><strong>throttle</strong>：确保一个持续的操作流以每 X 毫秒执行一次的速度执行。例如每 200ms 检查一下滚动条的位置来触发某个 CSS 动画。</li>
+<li><strong>requestAnimationFrame</strong>：throttle的一个替代品。适用于需要计算元素在屏幕上的位置和渲染的时候，能够保证动画或者变化的平滑性。注意：IE9 不支持。</li>
+</ul>
+<p>原文链接：<a href="https://css-tricks.com/debouncing-throttling-explained-examples/" target="_blank" rel="noopener">https://css-tricks.com/debouncing-throttling-explained-examples/</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/03/词法环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/03/词法环境/" itemprop="url">
+                  词法环境
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-03 19:43:19 / 修改时间：19:43:44" itemprop="dateCreated datePublished" datetime="2018-11-03T19:43:19+08:00">2018-11-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/01/事件顺序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/事件顺序/" itemprop="url">
+                  事件顺序
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-01 11:32:50 / 修改时间：11:34:12" itemprop="dateCreated datePublished" datetime="2018-11-01T11:32:50+08:00">2018-11-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Event-order"><a href="#Event-order" class="headerlink" title="Event order"></a>Event order</h1><p>On the <a href="https://www.quirksmode.org/js/introevents.html" target="_blank" rel="noopener">Introduction to events</a> page I asked a question that at first sight seems incomprehensible: “If an element and one of its ancestors have an event handler for the same event, which one should fire first?” Not surprisingly, this depends on the browser.</p>
+<p>The basic problem is very simple. Suppose you have a element inside an element</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-----------------------------------</span><br><span class="line">| element1                        |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|   |element2               |     |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|                                 |</span><br><span class="line">-----------------------------------</span><br></pre></td></tr></table></figure>
+<p>and both have an onClick event handler. If the user clicks on element2 he causes a click event in both element1 and element2. But which event fires first? Which event handler should be executed first? What, in other words, is the <em>event order</em>?</p>
+<h3 id="Two-models"><a href="#Two-models" class="headerlink" title="Two models"></a>Two models</h3><p>Not surprisingly, back in the bad old days Netscape and Microsoft came to different conclusions.</p>
+<ul>
+<li>Netscape said that the event on element1 takes place first. This is called event <em>capturing</em>.</li>
+<li>Microsoft maintained that the event on element2 takes precedence. This is called event <em>bubbling</em>.</li>
+</ul>
+<p>The two event orders are radically opposed. Explorer only supports event bubbling. Mozilla, Opera 7 and Konqueror support both. Older Opera’s and iCab support neither.</p>
+<h4 id="Event-capturing"><a href="#Event-capturing" class="headerlink" title="Event capturing"></a>Event capturing</h4><p>When you use event capturing</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">               | |</span><br><span class="line">---------------| |-----------------</span><br><span class="line">| element1     | |                |</span><br><span class="line">|   -----------| |-----------     |</span><br><span class="line">|   |element2  \ /          |     |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|        Event CAPTURING          |</span><br><span class="line">-----------------------------------</span><br></pre></td></tr></table></figure>
+<p>the event handler of element1 fires first, the event handler of element2 fires last.</p>
+<h4 id="Event-bubbling"><a href="#Event-bubbling" class="headerlink" title="Event bubbling"></a>Event bubbling</h4><p>When you use event bubbling</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">               / \</span><br><span class="line">---------------| |-----------------</span><br><span class="line">| element1     | |                |</span><br><span class="line">|   -----------| |-----------     |</span><br><span class="line">|   |element2  | |          |     |</span><br><span class="line">|   -------------------------     |</span><br><span class="line">|        Event BUBBLING           |</span><br><span class="line">-----------------------------------</span><br></pre></td></tr></table></figure>
+<p>the event handler of element2 fires first, the event handler of element1 fires last.</p>
+<h3 id="W3C-model"><a href="#W3C-model" class="headerlink" title="W3C model"></a>W3C model</h3><p>W3C has very sensibly decided to take a middle position in this struggle. Any event taking place in the <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/" target="_blank" rel="noopener">W3C event model</a> is first captured until it reaches the target element and then bubbles up again.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">                 | |  / \</span><br><span class="line">-----------------| |--| |-----------------</span><br><span class="line">| element1       | |  | |                |</span><br><span class="line">|   -------------| |--| |-----------     |</span><br><span class="line">|   |element2    \ /  | |          |     |</span><br><span class="line">|   --------------------------------     |</span><br><span class="line">|        W3C event model                 |</span><br><span class="line">------------------------------------------</span><br></pre></td></tr></table></figure>
+<p>You, the web developer, can choose whether to register an event handler in the capturing or in the bubbling phase. This is done through the <code>addEventListener()</code> method explained on the <a href="https://www.quirksmode.org/js/events_advanced.html" target="_blank" rel="noopener">Advanced models</a> page. If its last argument is <code>true</code> the event handler is set for the capturing phase, if it is<code>false</code> the event handler is set for the bubbling phase.</p>
+<p>Suppose you do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.addEventListener(&apos;click&apos;,doSomething2,true)</span><br><span class="line">element2.addEventListener(&apos;click&apos;,doSomething,false)</span><br></pre></td></tr></table></figure>
+<p>If the user clicks on element2 the following happens:</p>
+<ol>
+<li>The <code>click</code> event starts in the capturing phase. The event looks if any ancestor element of element2 has a <code>onclick</code> event handler for the capturing phase.</li>
+<li>The event finds one on element1. <code>doSomething2()</code> is executed.</li>
+<li>The event travels down to the target itself, no more event handlers for the capturing phase are found. The event moves to its bubbling phase and executes <code>doSomething()</code>, which is registered to element2 for the bubbling phase.</li>
+<li>The event travels upwards again and checks if any ancestor element of the target has an event handler for the bubbling phase. This is not the case, so nothing happens.</li>
+</ol>
+<p>The reverse would be</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.addEventListener(&apos;click&apos;,doSomething2,false)</span><br><span class="line">element2.addEventListener(&apos;click&apos;,doSomething,false)</span><br></pre></td></tr></table></figure>
+<p>Now if the user clicks on element2 the following happens:</p>
+<ol>
+<li>The <code>click</code> event starts in the capturing phase. The event looks if any ancestor element of element2 has a <code>onclick</code> event handler for the capturing phase and doesn’t find any.</li>
+<li>The event travels down to the target itself. The event moves to its bubbling phase and executes <code>doSomething()</code>, which is registered to element2 for the bubbling phase.</li>
+<li>The event travels upwards again and checks if any ancestor element of the target has an event handler for the bubbling phase.</li>
+<li>The event finds one on element1. Now <code>doSomething2()</code> is executed.</li>
+</ol>
+<h4 id="Compatibility-with-traditional-model"><a href="#Compatibility-with-traditional-model" class="headerlink" title="Compatibility with traditional model"></a>Compatibility with traditional model</h4><p>In the browsers that support the W3C DOM, a traditional event registration</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element1.onclick = doSomething2;</span><br></pre></td></tr></table></figure>
+<p>is seen as a registration in the <em>bubbling phase</em>.</p>
+<h3 id="Use-of-event-bubbling"><a href="#Use-of-event-bubbling" class="headerlink" title="Use of event bubbling"></a>Use of event bubbling</h3><p>Few web developers consciously use event capturing or bubbling. In Web pages as they are made today, it is simply not necessary to let a bubbling event be handled by several different event handlers. Users might get confused by several things happening after one mouse click, and usually you want to keep your event handling scripts separated. When the user clicks on an element, something happens, when he clicks on another element, something else happens.</p>
+<p>Of course this might change in the future, and it’s good to have models available that are forward compatible. But the main practical use of event capturing and bubbling today is the registration of default functions.</p>
+<h3 id="It-always-happens"><a href="#It-always-happens" class="headerlink" title="It always happens"></a>It always happens</h3><p>What you first need to understand is that event capturing or bubbling always happens. If you define a general onclick event handler for your entire document</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">document.onclick = doSomething;</span><br><span class="line">if (document.captureEvents) document.captureEvents(Event.CLICK);</span><br></pre></td></tr></table></figure>
+<p>any <code>click</code> event on any element in the document will eventually bubble up to the document and thus fire this general event handler. Only when a previous event handling script explicitly orders the event to stop bubbling, it will not propagate to the document.</p>
+<h3 id="Uses"><a href="#Uses" class="headerlink" title="Uses"></a>Uses</h3><p>Because any event ends up on the document, default event handlers become possible. Suppose you have this page:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">------------------------------------</span><br><span class="line">| document                         |</span><br><span class="line">|   ---------------  ------------  |</span><br><span class="line">|   | element1    |  | element2 |  |</span><br><span class="line">|   ---------------  ------------  |</span><br><span class="line">|                                  |</span><br><span class="line">------------------------------------</span><br><span class="line"></span><br><span class="line">element1.onclick = doSomething;</span><br><span class="line">element2.onclick = doSomething;</span><br><span class="line">document.onclick = defaultFunction;</span><br></pre></td></tr></table></figure>
+<p>Now if the user clicks on element1 or 2, <code>doSomething()</code> is executed. You can stop the event propagation here, if you wish. If you don’t the event bubbles up to <code>defaultFunction()</code>. If the user clicks anywhere else <code>defaultFunction()</code> is also executed. This might be useful sometimes.</p>
+<p>Setting document–wide event handlers is necessary in drag–and–drop scripts. Typically a <code>mousedown</code> event on a layer selects this layer and makes it respond to the <code>mousemove</code> event. Though the <code>mousedown</code> is usually registered on the layer to avoid browser bugs, both other event handlers must be document–wide.</p>
+<p>Remember the First Law of Browserology: anything can happen, and it usually does when you’re least prepared for it. So it may happen that the user moves his mouse very wildly and the script doesn’t keep up so that the mouse is not over the layer any more.</p>
+<ul>
+<li>If the <code>onmousemove</code> event handler is registered to the layer, the layer doesn’t react to the mouse movement any more, causing confusion.</li>
+<li>If the <code>onmouseup</code> event handler is registered on the layer, this event isn’t caught either so that the layer keeps reacting to the mouse movements even after the user thinks he dropped the layer. This causes even more confusion.</li>
+</ul>
+<p>So in this case event bubbling is very useful because registering your event handlers on document level makes sure they’re always executed.</p>
+<h3 id="Turning-it-off"><a href="#Turning-it-off" class="headerlink" title="Turning it off"></a>Turning it off</h3><p>But usually you want to turn all capturing and bubbling off to keep functions from interfering with each other. Besides, if your document structure is very complex (lots of nested tables and such) you may save system resources by turning off bubbling. The browser has to go through every single ancestor element of the event target to see if it has an event handler. Even if none are found, the search still takes time.</p>
+<p>In the Microsoft model you must set the event’s <code>cancelBubble</code> property to true.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.event.cancelBubble = true</span><br></pre></td></tr></table></figure>
+<p>In the W3C model you must call the event’s <code>stopPropagation()</code> method. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e.stopPropagation()</span><br></pre></td></tr></table></figure>
+<p>This stops all propagation of the event in the bubbling phase. For a complete cross-browser experience do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function doSomething(e)</span><br><span class="line">&#123;</span><br><span class="line">	if (!e) var e = window.event;</span><br><span class="line">	e.cancelBubble = true;</span><br><span class="line">	if (e.stopPropagation) e.stopPropagation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setting the <code>cancelBubble</code> property in browsers that don’t support it doesn’t hurt. The browser shrugs and creates the property. Of course it doesn’t actually cancel the bubbling, but the assignment itself is safe.</p>
+<h3 id="currentTarget"><a href="#currentTarget" class="headerlink" title="currentTarget"></a>currentTarget</h3><p>As we’ve seen earlier, an event has a <code>target</code> or <code>srcElement</code> that contains a reference to the element the event happened on. In our example this is element2, since the user clicked on it.</p>
+<p>It is very important to understand that during the capturing and bubbling phases (if any) this target does not change: it always remains a reference to element2.</p>
+<p>But suppose we register these event handlers:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.onclick = doSomething;</span><br><span class="line">element2.onclick = doSomething;</span><br></pre></td></tr></table></figure>
+<p>If the user clicks on element2 <code>doSomething()</code> is executed twice. But how do you know which HTML element is currently handling the event? <code>target/srcElement</code> don’t give a clue, they always refer to element2 since it is the original source of the event.</p>
+<p>To solve this problem W3C has added the <code>currentTarget</code> property. It contains a reference to the HTML element the event is currently being handled by: exactly what we need. Unfortunately the Microsoft model doesn’t contain a similar property.</p>
+<p>You can also use <a href="https://www.quirksmode.org/js/this.html" target="_blank" rel="noopener">the <code>this</code> keyword</a>. In the example above it refers to the HTML element the event is handled on, just like <code>currentTarget</code>.</p>
+<h3 id="Problems-of-the-Microsoft-model"><a href="#Problems-of-the-Microsoft-model" class="headerlink" title="Problems of the Microsoft model"></a>Problems of the Microsoft model</h3><p>But when you use the Microsoft event registration model the <code>this</code> keyword doesn’t refer to the HTML element. Combined with the lack of a <code>currentTarget</code>–like property in the Microsoft model, this means that if you do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.attachEvent(&apos;onclick&apos;,doSomething)</span><br><span class="line">element2.attachEvent(&apos;onclick&apos;,doSomething)</span><br></pre></td></tr></table></figure>
+<p>you <em>cannot</em> know which HTML element currently handles the event. This is the most serious problem with the Microsoft event registration model and for me it’s reason enough never to use it, not even in IE/Win only applications.</p>
+<p>I hope Microsoft will soon add a <code>currentTarget</code>–like property — or maybe even follow the standard? Web developers need this information.</p>
+<h3 id="Continue"><a href="#Continue" class="headerlink" title="Continue"></a>Continue</h3><p>If you wish to go through all event pages in order, you should now continue with the <a href="https://www.quirksmode.org/js/events_mouse.html" target="_blank" rel="noopener">Mouse events</a> page.</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/29/addEventListener/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -709,7 +1245,7 @@
 </ul>
 </li>
 </ul>
-<img src="/2018/05/23/promise/promise-resolve-reject.png">
+
 <p>下面是一个简单的执行者的例子，</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 当promise被构造的时候，这个函数就被立即执行</span></span><br><span class="line"></span><br><span class="line">  alert(resolve); <span class="comment">// function () &#123; [native code] &#125;</span></span><br><span class="line">  alert(reject);  <span class="comment">// function () &#123; [native code] &#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1秒之后这个任务完成，输出结果"done!"</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> resolve(<span class="string">"done!"</span>), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>通过运行上面的代码，我们可以看出两件事情：</p>
@@ -718,7 +1254,7 @@
 <li>执行者接收两个参数：<code>resolve</code> 和 <code>reject</code> – 这些函数来自JavaScript引擎。我们不需要去创建它们。而且该由执行者来调用它们。</li>
 </ol>
 <p>1秒之后，执行者调用<code>resolve(&quot;done&quot;)</code>生成结果：</p>
-<img src="/2018/05/23/promise/promise-resolve-1.png">
+
 <p>这是任务成功完成的一个例子。</p>
 <p>现在再看一个执行者抛出异常的例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1秒之后任务结束，抛出异常</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Whoops!"</span>)), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
@@ -1764,509 +2300,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/14/面试题整理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="雯子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Athena">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/14/面试题整理/" itemprop="url">
-                  面试题整理
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-04-14 20:31:23" itemprop="dateCreated datePublished" datetime="2017-04-14T20:31:23+08:00">2017-04-14</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-01 11:05:55" itemprop="dateModified" datetime="2018-11-01T11:05:55+08:00">2018-11-01</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-new操作符具体做了什么"><a href="#1-new操作符具体做了什么" class="headerlink" title="1. new操作符具体做了什么"></a>1. new操作符具体做了什么</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> func = <span class="keyword">new</span> Func();</span><br></pre></td></tr></table></figure>
-<p>new共经过了四个阶段</p>
-<h4 id="1-创建一个空对象"><a href="#1-创建一个空对象" class="headerlink" title="1. 创建一个空对象"></a>1. 创建一个空对象</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br></pre></td></tr></table></figure>
-<h4 id="2-设置原型链"><a href="#2-设置原型链" class="headerlink" title="2. 设置原型链"></a>2. 设置原型链</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.__proto__= Func.prototype;</span><br></pre></td></tr></table></figure>
-<h4 id="3-让Func中的this指向obj，并执行Func的函数体。"><a href="#3-让Func中的this指向obj，并执行Func的函数体。" class="headerlink" title="3. 让Func中的this指向obj，并执行Func的函数体。"></a>3. 让Func中的this指向obj，并执行Func的函数体。</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = Func.call(obj);</span><br></pre></td></tr></table></figure>
-<h4 id="4-判断Func的返回值类型："><a href="#4-判断Func的返回值类型：" class="headerlink" title="4. 判断Func的返回值类型："></a>4. 判断Func的返回值类型：</h4><p>如果是值类型，返回obj。如果是引用类型，就返回这个引用类型的对象。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span>(result) == <span class="string">"object"</span>) &#123;</span><br><span class="line">  func = result;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  func = obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后再贴出来<a href="http://www.jianshu.com/p/15ac7393bc1f" target="_blank" rel="noopener">波同学</a>的写法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先一本正经的创建一个构造函数，其实该函数与普通函数并无区别</span></span><br><span class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">    <span class="keyword">this</span>.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将构造函数以参数形式传入</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">New</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 声明一个中间对象，该对象为最终返回的实例</span></span><br><span class="line">    <span class="keyword">var</span> res = &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span> (func.prototype !== <span class="literal">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将实例的原型指向构造函数的原型</span></span><br><span class="line">        res.__proto__ = func.prototype;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ret为构造函数执行的结果，这里通过apply，将构造函数内部的this指向修改为指向res，即为实例对象</span></span><br><span class="line">    <span class="keyword">var</span> ret = func.apply(res, <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当我们在构造函数中明确指定了返回对象时，那么new的执行结果就是该返回对象</span></span><br><span class="line">    <span class="keyword">if</span> ((<span class="keyword">typeof</span> ret === <span class="string">"object"</span> || <span class="keyword">typeof</span> ret === <span class="string">"function"</span>) &amp;&amp; ret !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果没有明确指定返回对象，则默认返回res，这个res就是实例对象</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过new声明创建实例，这里的p1，实际接收的正是new中返回的res</span></span><br><span class="line"><span class="keyword">var</span> p1 = New(Person, <span class="string">'tom'</span>, <span class="number">20</span>);</span><br><span class="line"><span class="built_in">console</span>.log(p1.getName());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当然，这里也可以判断出实例的类型了</span></span><br><span class="line"><span class="built_in">console</span>.log(p1 <span class="keyword">instanceof</span> Person); <span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="2-JQuery-中-fn-extend-函数的实现（实现核心代码即可）"><a href="#2-JQuery-中-fn-extend-函数的实现（实现核心代码即可）" class="headerlink" title="2. JQuery 中 $.fn.extend 函数的实现（实现核心代码即可）"></a>2. JQuery 中 $.fn.extend 函数的实现（实现核心代码即可）</h2><p><a href="https://segmentfault.com/a/1190000005895616" target="_blank" rel="noopener">参考一</a></p>
-<h2 id="3-伪元素和伪类的区别"><a href="#3-伪元素和伪类的区别" class="headerlink" title="3. 伪元素和伪类的区别"></a>3. 伪元素和伪类的区别</h2><h3 id="伪类"><a href="#伪类" class="headerlink" title="伪类"></a>伪类</h3><p>伪类存在的意义是为了通过选择器找到那些不存在与DOM树中的信息以及不能被常规CSS选择器获取到的信息。</p>
-<p>伪类由一个冒号:开头，冒号后面是伪类的名称和包含在圆括号中的可选参数。</p>
-<p>任何常规选择器可以再任何位置使用伪类。伪类语法不区别大小写。一些伪类的作用会互斥，另外一些伪类可以同时被同一个元素使用。并且，为了满足用户在操作DOM时产生的DOM结构改变，伪类也可以是动态的。</p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-classes" target="_blank" rel="noopener">标准伪类索引</a></p>
-<p>:active<br>:any<br>:checked<br>:default<br>:dir()<br>:disabled<br>:empty<br>:enabled<br>:first<br>:first-child<br>:first-of-type<br>:fullscreen<br>:focus<br>:hover<br>:indeterminate<br>:in-range<br>:invalid<br>:lang()<br>:last-child<br>:last-of-type<br>:left<br>:link<br>:not()<br>:nth-child()<br>:nth-last-child()<br>:nth-last-of-type()<br>:nth-of-type()<br>:only-child<br>:only-of-type<br>:optional<br>:out-of-range<br>:read-only<br>:read-write<br>:required<br>:right<br>:root<br>:scope<br>:target<br>:valid<br>:visited</p>
-<h3 id="伪元素"><a href="#伪元素" class="headerlink" title="伪元素"></a>伪元素</h3><p>伪元素在DOM树中创建了一些抽象元素，这些抽象元素是不存在于文档语言里的（可以理解为html源码）。比如：documen接口不提供访问元素内容的第一个字或者第一行的机制，而伪元素可以使开发者可以提取到这些信息。并且，一些伪元素可以使开发者获取到不存在于源文档中的内容（比如常见的::before,::after）。</p>
-<p>伪元素的由两个冒号::开头，然后是伪元素的名称。</p>
-<p>使用两个冒号::是为了区别伪类和伪元素（CSS2中并没有区别）。当然，考虑到兼容性，CSS2中已存的伪元素仍然可以使用一个冒号:的语法，但是CSS3中新增的伪元素必须使用两个冒号::。</p>
-<p>一个选择器只能使用一个伪元素，并且伪元素必须处于选择器语句的最后。</p>
-<p>注：不排除未来会加入同时使用多个伪元素的机制。</p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements" target="_blank" rel="noopener">所有伪元素</a></p>
-<p>::after<br>::before<br>::first-letter<br>::first-line<br>::selection</p>
-<h2 id="4-找出整形数组中乘积最大的三个数"><a href="#4-找出整形数组中乘积最大的三个数" class="headerlink" title="4. 找出整形数组中乘积最大的三个数"></a>4. 找出整形数组中乘积最大的三个数</h2>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/11/你不知道的js笔记-this和原型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="雯子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Athena">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/11/你不知道的js笔记-this和原型/" itemprop="url">
-                  你不知道的js笔记-this和原型
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-04-11 11:06:01" itemprop="dateCreated datePublished" datetime="2017-04-11T11:06:01+08:00">2017-04-11</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2017-04-14 11:25:17" itemprop="dateModified" datetime="2017-04-14T11:25:17+08:00">2017-04-14</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="this的调用"><a href="#this的调用" class="headerlink" title="this的调用"></a>this的调用</h2><p>每个函数的this是在调用时被绑定的，完全取决于函数的调用位置，也就是函数的调用方法。<br>那么就要分析调用栈，可以用浏览器的调试工具查看调用栈。打断点后，显示的调用栈的第二个元素，就是真正的调用位置。</p>
-<h3 id="绑定规则"><a href="#绑定规则" class="headerlink" title="绑定规则"></a>绑定规则</h3><h4 id="1-默认绑定"><a href="#1-默认绑定" class="headerlink" title="1. 默认绑定"></a>1. 默认绑定</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">funciton foo()&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">foo(); <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
-<p>如果使用严格模式，则不能将全局对象用于默认绑定，因此this会绑定到undefined</p>
-<h4 id="2-隐式绑定"><a href="#2-隐式绑定" class="headerlink" title="2. 隐式绑定"></a>2. 隐式绑定</h4><p>在一个对象内部包含一个指向函数的属性，并通过这个属性间接引用函数，从而把this间接（隐式）绑定到这个对象上。<br>当函数引用有上下文对象时，隐式绑定规则会把函数调用中的this绑定到这个上下文对象。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">funciton foo() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: <span class="number">2</span>,</span><br><span class="line">  foo: foo</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">obj.foo(); <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
-<h4 id="3-显式绑定"><a href="#3-显式绑定" class="headerlink" title="3. 显式绑定"></a>3. 显式绑定</h4><p>call(…)和apply(…)<br>它们的第一个参数是一个对象，是给this准备的，接着在调用函数时将其绑定到this。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">funciton foo() &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a:<span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line">foo.call(obj); <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
-<p>如果传入了一个原始值，也就是字符串类型、布尔类型或者数字类型来当做this的绑定对象，这个原始值会被转换成它的对象形式，也就是new String(…), new Boolean(…), new Number(…)</p>
-<h5 id="3-1-硬绑定"><a href="#3-1-硬绑定" class="headerlink" title="3.1 硬绑定"></a>3.1 硬绑定</h5><p>ES5提供了内置的方法Function.prototype.bind，它的用法如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">something</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.a, something);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.a + something;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a:<span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = foo.bind(obj);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = bar (<span class="number">3</span>); <span class="comment">//2 3</span></span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//5</span></span><br></pre></td></tr></table></figure>
-<p>bind会返回一个硬解码的新函数，它会把你指定的参数设置为this的上下文并调用原始函数。</p>
-<h5 id="3-2-API调用的上下文"><a href="#3-2-API调用的上下文" class="headerlink" title="3.2 API调用的上下文"></a>3.2 API调用的上下文</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fonction foo(el) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(el, <span class="keyword">this</span>.id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  id: <span class="string">"awesome"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用foo(...)时把this绑定到obj</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].forEach(foo, obj)</span><br></pre></td></tr></table></figure>
-<h4 id="4-new绑定"><a href="#4-new绑定" class="headerlink" title="4. new绑定"></a>4. new绑定</h4>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/10/你不知道的js第五章笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="雯子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Athena">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/10/你不知道的js第五章笔记/" itemprop="url">
-                  你不知道的js第五章笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-04-10 11:06:56" itemprop="dateCreated datePublished" datetime="2017-04-10T11:06:56+08:00">2017-04-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2017-04-14 11:25:10" itemprop="dateModified" datetime="2017-04-14T11:25:10+08:00">2017-04-14</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="作用域闭包"><a href="#作用域闭包" class="headerlink" title="作用域闭包"></a>作用域闭包</h2><p>首先是闭包的定义：</p>
-<blockquote>
-<p>当函数可以记住并访问所在的词法作用域时，就产生了闭包，即使函数是在当前词法作用域之外执行。</p>
-</blockquote>
-<p>无论使用何种方式对函数类型的值进行传递，当函数在别处被调用时都可以观察到闭包。</p>
-<p>本质上无论何时何地，如果将（访问它们各自词法作用域的）函数当做第一级的值类型并到处传递，就会看到闭包在这些函数的应用。例如定时器、事件监听器、ajax请求、跨窗口通信等，只要使用了毁掉函数，实际上就是在使用闭包。</p>
-<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>模块模式需要具备两个必要条件：</p>
-<ol>
-<li>必须有外部的封闭函数，该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）</li>
-<li>封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。</li>
-</ol>
-<p>es6的模块没有“行内”格式，必须被定义在独立的文件中，即一个文件一个模块。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2313,7 +2351,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-count">22</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
