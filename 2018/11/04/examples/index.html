@@ -108,19 +108,19 @@
 
 
 
-  <meta name="description" content="【译】通过例子解释 Debounce 和 ThrottleDebounce 和 Throttle 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。 当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能">
+  <meta name="description" content="Debounce 和 Throttle 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。 当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能会有变化。 下面我们以滚动事件举例： See the Pe">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Athena">
+<meta property="og:title" content="【译】通过例子解释 Debounce 和 Throttle">
 <meta property="og:url" content="http://yoursite.com/2018/11/04/examples/index.html">
 <meta property="og:site_name" content="Athena">
-<meta property="og:description" content="【译】通过例子解释 Debounce 和 ThrottleDebounce 和 Throttle 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。 当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能">
+<meta property="og:description" content="Debounce 和 Throttle 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。 当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能会有变化。 下面我们以滚动事件举例： See the Pe">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://css-tricks.com/wp-content/uploads/2016/04/debounce.png">
 <meta property="og:image" content="https://css-tricks.com/wp-content/uploads/2016/04/debounce-leading.png">
-<meta property="og:updated_time" content="2018-11-04T08:11:09.993Z">
+<meta property="og:updated_time" content="2018-11-04T08:13:03.811Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Athena">
-<meta name="twitter:description" content="【译】通过例子解释 Debounce 和 ThrottleDebounce 和 Throttle 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。 当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能">
+<meta name="twitter:title" content="【译】通过例子解释 Debounce 和 Throttle">
+<meta name="twitter:description" content="Debounce 和 Throttle 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。 当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能会有变化。 下面我们以滚动事件举例： See the Pe">
 <meta name="twitter:image" content="https://css-tricks.com/wp-content/uploads/2016/04/debounce.png">
 
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title> | Athena</title>
+  <title>【译】通过例子解释 Debounce 和 Throttle | Athena</title>
   
 
 
@@ -343,7 +343,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">【译】通过例子解释 Debounce 和 Throttle
               
             
           </h1>
@@ -368,9 +368,13 @@
                 
               
 
-              <time title="创建时间：2018-11-04 16:11:09" itemprop="dateCreated datePublished" datetime="2018-11-04T16:11:09+08:00">2018-11-04</time>
+              <time title="创建时间：2018-11-04 16:11:09 / 修改时间：16:13:03" itemprop="dateCreated datePublished" datetime="2018-11-04T16:11:09+08:00">2018-11-04</time>
             
 
+            
+              
+
+              
             
           </span>
 
@@ -402,7 +406,7 @@
       
 
       
-        <h1 id="【译】通过例子解释-Debounce-和-Throttle"><a href="#【译】通过例子解释-Debounce-和-Throttle" class="headerlink" title="【译】通过例子解释 Debounce 和 Throttle"></a>【译】通过例子解释 Debounce 和 Throttle</h1><p><strong>Debounce</strong> 和 <strong>Throttle</strong> 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。</p>
+        <p><strong>Debounce</strong> 和 <strong>Throttle</strong> 是两个很相似但是又不同的技术，都可以控制一个函数在一段时间内执行的次数。</p>
 <p>当我们在操作 DOM 事件的时候，为函数添加 debounce 或者 throttle 就会尤为有用。为什么？因为我们在事件和函数执行之间加了一个我们自己的控制层。记住，我们是不去控制这些 DOM 事件触发的频率的，因为这个可能会有变化。</p>
 <p>下面我们以滚动事件举例：</p>
 <iframe height="265" scrolling="no" title="Scroll events counter" src="//codepen.io/athena0304/embed/Yjbqar/?height=265&theme-id=0&default-tab=css,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="https://codepen.io/athena0304/pen/Yjbqar/" target="_blank" rel="noopener">Scroll events counter</a> by Athena (<a href="https://codepen.io/athena0304" target="_blank" rel="noopener">@athena0304</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
@@ -495,6 +499,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/11/04/understanding-design-patterns-in-javascript/" rel="prev" title="【译】简单理解 JavaScript 中的设计模式">
+                【译】简单理解 JavaScript 中的设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -567,7 +575,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -610,6 +618,16 @@
                   
                 </span>
               
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/oxw" target="_blank" title="segmentfault"><i class="fa fa-fw fa-globe"></i>segmentfault</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/582419f30ce4630058b08dc0" target="_blank" title="掘金"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
             </div>
           
 
@@ -637,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【译】通过例子解释-Debounce-和-Throttle"><span class="nav-number">1.</span> <span class="nav-text">【译】通过例子解释 Debounce 和 Throttle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Debounce"><span class="nav-number">1.0.1.</span> <span class="nav-text">Debounce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leading-边缘-或者-“immediate”"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">Leading 边缘 (或者 “immediate”)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debounce-的实现"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">Debounce 的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debounce-举例"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">Debounce 举例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Resize-举例"><span class="nav-number">1.0.1.3.1.</span> <span class="nav-text">Resize 举例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.0.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Debounce"><span class="nav-number">1.</span> <span class="nav-text">Debounce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leading-边缘-或者-“immediate”"><span class="nav-number">1.1.</span> <span class="nav-text">Leading 边缘 (或者 “immediate”)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debounce-的实现"><span class="nav-number">1.2.</span> <span class="nav-text">Debounce 的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debounce-举例"><span class="nav-number">1.3.</span> <span class="nav-text">Debounce 举例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Resize-举例"><span class="nav-number">1.3.1.</span> <span class="nav-text">Resize 举例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
