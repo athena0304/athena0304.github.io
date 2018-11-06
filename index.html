@@ -320,168 +320,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/06/npm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="雯子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Athena">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/06/npm/" itemprop="url">
-                  使用Vue CLI 3将基于element-ui二次封装的组件发布到npm
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-11-06 19:00:19 / 修改时间：19:19:10" itemprop="dateCreated datePublished" datetime="2018-11-06T19:00:19+08:00">2018-11-06</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>首先用<a href="https://cli.vuejs.org/zh/" target="_blank" rel="noopener">Vue CLI 3</a>来初始化项目<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yarn global add @vue/cli</span><br><span class="line">vue create qiyun-el-ui</span><br><span class="line">vue ui</span><br></pre></td></tr></table></figure></p>
-<h3 id="安装element-ui"><a href="#安装element-ui" class="headerlink" title="安装element-ui"></a>安装element-ui</h3><p>这里使用官方提供的的插件安装：<br><a href="http://element.eleme.io/#/zh-CN/component/quickstart#shi-yong-vue-cli-at-3" target="_blank" rel="noopener">http://element.eleme.io/#/zh-CN/component/quickstart#shi-yong-vue-cli-at-3</a></p>
-<p><a href="https://github.com/ElementUI/vue-cli-plugin-element" target="_blank" rel="noopener">https://github.com/ElementUI/vue-cli-plugin-element</a></p>
-<p>在插件列表搜索element<br><img src="https://user-images.githubusercontent.com/10095631/43555082-b9414998-962a-11e8-83ab-cda066a61093.png" alt="image"><br>在这里我选的手动导入，图中是全部导入<br><img src="https://user-images.githubusercontent.com/10095631/43555119-f486f034-962a-11e8-9862-dcaca0e3ebb3.png" alt="image"></p>
-<p>这样在项目中，就会新建一个plugins文件夹，里面有个element.js 文件，如果想手动引入，就在这里添加要依赖的组件，这里是为了调试组件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> &#123; </span><br><span class="line">  Button, </span><br><span class="line">  Dialog </span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'element-ui'</span></span><br><span class="line"></span><br><span class="line">Vue.use(Button)</span><br><span class="line">Vue.use(Dialog)</span><br></pre></td></tr></table></figure></p>
-<p>由于我们是基于<code>element-ui</code>的部分组件做的二次封装，所以最好还是按需引入所依赖的组件比较好。</p>
-<h2 id="编写组件"><a href="#编写组件" class="headerlink" title="编写组件"></a>编写组件</h2><p>在 <code>src</code> 的同级下面新建 <code>packages</code> 目录，在这里添加自己封装的要发布的组件。<br>例如，新建 <code>qe-modal</code> 文件夹，再接着新建 <code>src</code> 文件夹，里面新建 <code>qe-modal.vue</code>，在这里写组件的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-dialog</span><br><span class="line">    :title=&quot;title&quot;</span><br><span class="line">    :visible=&quot;dialogVisible&quot;</span><br><span class="line">    @close=&quot;$emit(&apos;update:dialogVisible&apos;, false)&quot;</span><br><span class="line">    :width=&quot;width&quot;&gt;</span><br><span class="line">    &lt;slot name=&quot;modal-body&quot;&gt;&lt;/slot&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div slot=&quot;footer&quot; class=&quot;dialog-footer&quot;&gt;</span><br><span class="line">      &lt;slot name=&quot;modal-footer&quot;&gt;</span><br><span class="line">        &lt;el-button @click=&quot;$emit(&apos;update:dialogVisible&apos;, false)&quot; size=&quot;small&quot;&gt;取 消&lt;/el-button&gt;</span><br><span class="line">        &lt;el-button type=&quot;primary&quot; @click=&quot;$emit(&apos;confirm&apos;)&quot; size=&quot;small&quot; :disabled=&quot;confirmDisable || beforeSendDisable&quot;&gt;&#123;&#123; beforeSendDisable? &quot;处理中...&quot; : &quot;确 定&quot; &#125;&#125;&lt;/el-button&gt;</span><br><span class="line">      &lt;/slot&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/el-dialog&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;qeModal&apos;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    dialogVisible: Boolean,</span><br><span class="line">    title: String,</span><br><span class="line">    width: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      default: &apos;580px&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">    beforeSendDisable: &#123;</span><br><span class="line">      type: Boolean,</span><br><span class="line">      default: false</span><br><span class="line">    &#125;,</span><br><span class="line">    confirmDisable: &#123;</span><br><span class="line">      type: Boolean,</span><br><span class="line">      default: false</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>在 <code>qe-modal</code> 根目录下新建 <code>index.js</code> ，里面注册单独的该组件，方便使用时可以单独引用：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> qeModal <span class="keyword">from</span> <span class="string">'./src/qe-modal'</span></span><br><span class="line"></span><br><span class="line">qeModal.install = <span class="function"><span class="keyword">function</span>(<span class="params">Vue</span>) </span>&#123;</span><br><span class="line">  Vue.component(qeModal.name, qeModal)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> qeModal</span><br></pre></td></tr></table></figure></p>
-<p>这样一个组件就添加完成了，然后需要在 <code>packages</code> 的根目录下添加一个总的 <code>index.js</code>，这里是全局注册的地方，使用时可以全局引入，其实就跟 <code>element-ui</code> 的两种方式一样：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> qeModal <span class="keyword">from</span> <span class="string">'./qe-modal'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> components = [</span><br><span class="line">  qeModal</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> install = <span class="function"><span class="keyword">function</span>(<span class="params">Vue</span>) </span>&#123;</span><br><span class="line">  components.forEach(<span class="function"><span class="params">component</span> =&gt;</span> &#123;</span><br><span class="line">    Vue.component(component.name, component);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">window</span> !== <span class="string">'undefined'</span> &amp;&amp; <span class="built_in">window</span>.Vue) &#123;</span><br><span class="line">  install(<span class="built_in">window</span>.Vue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  install,</span><br><span class="line">  qeModal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>后面再添加组件，在这里也要再注册一下，而<code>element-ui</code> 源码中是动态引入的，我们的项目组件还没那么多，可以先一个个手动引入，如果后面数量多了，不好维护，可以参考 <code>element-ui</code>  的源码实现，我在<a href="https://athena0304.github.io/element-analysis/build/bin/build-entry.js.html" target="_blank" rel="noopener">这里</a>做了一些简单的解释。</p>
-<h2 id="配置-npm"><a href="#配置-npm" class="headerlink" title="配置 npm"></a>配置 npm</h2><p>在 package.json 里面的 script 里面加一个 lib选项，方便每次构建：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="comment">// ...,</span></span><br><span class="line">    <span class="string">"lib"</span>: <span class="string">"vue-cli-service build --target lib --name qiyun-el-ui --dest lib ./packages/index.js"</span></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
-<p>其中 <code>--name</code> 后面是你最后想要生成文件的名字，并用 <code>--dest lib</code> 修改了构建的目录。<br>然后在 <code>package.json</code> 里面添加一些npm包发布的相关信息，比如作者、版本等：<br>其中最重要的是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;main&quot;: &quot;lib/qiyun-el-ui.common.js&quot;,</span><br></pre></td></tr></table></figure>
-<p>这里的路径要和上面构建出来的目录和文件名对应上。</p>
-<p>里面的配置项，在网上找了个例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"maucash"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"maucash中常用组件抽取"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.2"</span>,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"kuangshp &lt;kuangshp@126.com&gt;"</span>,</span><br><span class="line">  <span class="comment">// 开源协议</span></span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"MIT"</span>,</span><br><span class="line">  <span class="comment">// 因为组件包是公用的，所以private为false</span></span><br><span class="line">  <span class="string">"private"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="comment">// 配置main结点，如果不配置，我们在其他项目中就不用import XX from '包名'来引用了，只能以包名作为起点来指定相对的路径</span></span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"dist/maucash.js"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"cross-env NODE_ENV=development webpack-dev-server --open --hot"</span>,</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"cross-env NODE_ENV=production webpack --progress --hide-modules"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"axios"</span>: <span class="string">"^0.18.0"</span>,</span><br><span class="line">    <span class="string">"iview"</span>: <span class="string">"^2.14.1"</span>,</span><br><span class="line">    <span class="string">"style-loader"</span>: <span class="string">"^0.23.1"</span>,</span><br><span class="line">    <span class="string">"url-loader"</span>: <span class="string">"^1.1.2"</span>,</span><br><span class="line">    <span class="string">"vue"</span>: <span class="string">"^2.5.11"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 指定代码所在的仓库地址</span></span><br><span class="line">  <span class="string">"repository"</span>: &#123;</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"git"</span>,</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"git+git@git.wolaidai.com:maucash/maucash.git"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 指定打包后,包中存在的文件夹</span></span><br><span class="line">  <span class="string">"files"</span>: [</span><br><span class="line">    <span class="string">"dist"</span>,</span><br><span class="line">    <span class="string">"src"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// 指定关键词</span></span><br><span class="line">  <span class="string">"keywords"</span>: [</span><br><span class="line">    <span class="string">"vue"</span>,</span><br><span class="line">    <span class="string">"maucash"</span>,</span><br><span class="line">    <span class="string">"code"</span>,</span><br><span class="line">    <span class="string">"maucash code"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// 项目官网的地址</span></span><br><span class="line">  <span class="string">"homepage"</span>: <span class="string">"https://github.com/kuangshp/maucash"</span>,</span><br><span class="line">  <span class="string">"browserslist"</span>: [</span><br><span class="line">    <span class="string">"&gt; 1%"</span>,</span><br><span class="line">    <span class="string">"last 2 versions"</span>,</span><br><span class="line">    <span class="string">"not ie &lt;= 8"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"babel-core"</span>: <span class="string">"^6.26.0"</span>,</span><br><span class="line">    <span class="string">"babel-loader"</span>: <span class="string">"^7.1.2"</span>,</span><br><span class="line">    <span class="string">"babel-plugin-transform-runtime"</span>: <span class="string">"^6.23.0"</span>,</span><br><span class="line">    <span class="string">"babel-preset-env"</span>: <span class="string">"^1.6.0"</span>,</span><br><span class="line">    <span class="string">"babel-preset-stage-3"</span>: <span class="string">"^6.24.1"</span>,</span><br><span class="line">    <span class="string">"cross-env"</span>: <span class="string">"^5.0.5"</span>,</span><br><span class="line">    <span class="string">"css-loader"</span>: <span class="string">"^0.28.7"</span>,</span><br><span class="line">    <span class="string">"file-loader"</span>: <span class="string">"^1.1.4"</span>,</span><br><span class="line">    <span class="string">"node-sass"</span>: <span class="string">"^4.5.3"</span>,</span><br><span class="line">    <span class="string">"sass-loader"</span>: <span class="string">"^6.0.6"</span>,</span><br><span class="line">    <span class="string">"vue-loader"</span>: <span class="string">"^13.0.5"</span>,</span><br><span class="line">    <span class="string">"vue-template-compiler"</span>: <span class="string">"^2.4.4"</span>,</span><br><span class="line">    <span class="string">"webpack"</span>: <span class="string">"^3.6.0"</span>,</span><br><span class="line">    <span class="string">"webpack-dev-server"</span>: <span class="string">"^2.9.1"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="发布到npm"><a href="#发布到npm" class="headerlink" title="发布到npm"></a>发布到npm</h2><p>到这块后面的网上有很多更细致的教程，我就不在这里赘述了。下面给出两个文章的链接，供参考。</p>
-<p>1、到<a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>上注册一个账号</p>
-<p>2、登录<br><code>npm login</code></p>
-<p>3、添加用户信息<br><code>npm adduser</code></p>
-<p>4、发布到远程仓库(npm)上<br><code>npm publish</code></p>
-<p>5、删除远程仓库的包<br><code>npx force-unpublish package-name &#39;原因描述&#39;</code></p>
-<p>参考：<br><a href="https://juejin.im/post/5bc44175f265da0a906f9869" target="_blank" rel="noopener">https://juejin.im/post/5bc44175f265da0a906f9869</a><br><a href="https://www.jb51.net/article/148692.htm" target="_blank" rel="noopener">Vue cli3 库模式搭建组件库并发布到 npm的流程<em>vue.js</em>脚本之家</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/06/3基于element-ui封装的组件发布npm包/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2304,6 +2142,169 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/15/怎样在vue项目下添加Eslint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/15/怎样在vue项目下添加Eslint/" itemprop="url">
+                  怎样在vue项目下添加Eslint
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-11-15 15:13:40 / 修改时间：15:48:44" itemprop="dateCreated datePublished" datetime="2017-11-15T15:13:40+08:00">2017-11-15</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="简易搭建"><a href="#简易搭建" class="headerlink" title="简易搭建"></a>简易搭建</h2><p><a href="https://eslint.org/" target="_blank" rel="noopener">ESLint官网网址</a></p>
+<p><a href="http://eslint.cn/" target="_blank" rel="noopener">ESLint中文官网</a></p>
+<p>如果你是想在自己的项目里搭建ESLint，就可以按照官网的指示，</p>
+<p>以全局安装举例，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g eslint</span><br></pre></td></tr></table></figure>
+<p>然后初始化</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --init</span><br></pre></td></tr></table></figure>
+<p>它会问你一些问题，你可以按照你的喜好进行配置，我选的是popular下面的standard，生成的文件是js格式，那么就会创建出<code>eslintrc.js</code>文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line"><span class="string">"extends"</span>: <span class="string">"standard"</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后就可以简单的lint某个文件了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ eslint yourfile.js</span><br></pre></td></tr></table></figure>
+<h2 id="在vue的项目里新添加ESLint"><a href="#在vue的项目里新添加ESLint" class="headerlink" title="在vue的项目里新添加ESLint"></a>在vue的项目里新添加ESLint</h2><p>有的时候，早期的时候，我们建立vue项目的时候，可能图简便，并没有初始化ESLint、单元测试等等模块，那么就需要后添加进去。</p>
+<p>如果是现在新建一个项目，通过vue-cli的问答就可以轻松初始化ESLint的配置。</p>
+<p>这里说一下怎样在老项目里新添加ESLint。</p>
+<p>首先，我先用vue-cli创建了一个新项目，在初始化的时候，选择安装eslint，</p>
+<p>选择standard规则，然后就生成了<code>eslintrc.js</code>，把生成的这个文件拷贝到要加ESlint的老项目里。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://eslint.org/docs/user-guide/configuring</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">//默认情况下，ESLint 会在所有父级目录里寻找配置文件，一直到根目录。如果你想要你所有项目都遵循一个特定的约定时，这将会很有用，但有时候会导致意想不到的结果。为了将 ESLint 限制到一个特定的项目，在你项目根目录下的 package.json 文件或者 .eslintrc.* 文件里的 eslintConfig 字段下设置 "root": true。ESLint 一旦发现配置文件中有 "root": true，它就会停止在父级目录中寻找。</span></span><br><span class="line">  root: <span class="literal">true</span>,</span><br><span class="line">  parser: <span class="string">'babel-eslint'</span>,</span><br><span class="line">  parserOptions: &#123;</span><br><span class="line">    sourceType: <span class="string">'module'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  env: &#123;</span><br><span class="line">    browser: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// https://github.com/standard/standard/blob/master/docs/RULES-en.md</span></span><br><span class="line">  extends: <span class="string">'standard'</span>,</span><br><span class="line">  <span class="comment">// required to lint *.vue files</span></span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="string">'html'</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// add your custom rules here</span></span><br><span class="line">  <span class="string">'rules'</span>: &#123;</span><br><span class="line">    <span class="comment">// allow paren-less arrow functions 要求箭头函数的参数使用圆括号</span></span><br><span class="line">    <span class="string">'arrow-parens'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="comment">// allow async-await 强制 generator 函数中 * 号周围使用一致的空格</span></span><br><span class="line">    <span class="string">'generator-star-spacing'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="comment">// allow debugger during development</span></span><br><span class="line">    <span class="string">'no-debugger'</span>: process.env.NODE_ENV === <span class="string">'production'</span> ? <span class="number">2</span> : <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后找到<code>package.json</code>，把ESLint相关的依赖加进去（也可以一个一个进行安装，或者有更好的办法。。）</p>
+<p><img src="file:///var/folders/tw/l4f5twr93wl5fcvpnrwd8nvr0000gp/T/WizNote/6ef8389b-88cf-4ee1-aa09-772bb5afb6f1/index_files/68513208.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;babel-eslint&quot;: &quot;^7.1.1&quot;,   &quot;eslint&quot;: &quot;^3.19.0&quot;,</span><br><span class="line"></span><br><span class="line">&quot;eslint-friendly-formatter&quot;: &quot;^3.0.0&quot;,</span><br><span class="line">&quot;eslint-loader&quot;: &quot;^1.7.1&quot;,</span><br><span class="line">&quot;eslint-plugin-html&quot;: &quot;^3.0.0&quot;,</span><br><span class="line">&quot;eslint-config-standard&quot;: &quot;^10.2.1&quot;,</span><br><span class="line">&quot;eslint-plugin-promise&quot;: &quot;^3.4.0&quot;,</span><br><span class="line">&quot;eslint-plugin-standard&quot;: &quot;^3.0.1&quot;,</span><br><span class="line">&quot;eslint-plugin-import&quot;: &quot;^2.7.0&quot;,</span><br><span class="line">&quot;eslint-plugin-node&quot;: &quot;^5.2.0&quot;,</span><br></pre></td></tr></table></figure>
+<p>然后在<code>webpack.base.conf.js</code>的rules里添加</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">       test: <span class="regexp">/\.(js|vue)$/</span>,</span><br><span class="line">       loader: <span class="string">'eslint-loader'</span>,</span><br><span class="line">       enforce: <span class="string">'pre'</span>,</span><br><span class="line">       include: [resolve(<span class="string">'src'</span>), resolve(<span class="string">'test'</span>)],</span><br><span class="line">       options: &#123;</span><br><span class="line">         formatter: <span class="built_in">require</span>(<span class="string">'eslint-friendly-formatter'</span>)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;,</span><br></pre></td></tr></table></figure>
+<p>再<code>npm install</code>一下，应该就可以了。</p>
+<p>这里的编辑器推荐用vscode，可以非常智能的显示出哪里出错，方便修改。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2355,7 +2356,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
