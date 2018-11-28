@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="项目中遇到了需要单独加载某个 markdown 文件显示在页面中，类似于操作指引的感觉，于是找到了 vue-markdown-loader 这个工具，觉得很好用，于是我打算开个专题看一下里面都做了些什么，有助于对 webpack loader 的理解。 准备工作这里需要先了解 webpack loader 的原理，后面的代码需要配合 webpack 的官网对照着来看。中文版在这里。 首先我们需要知">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-markdown-loader源码解析">
+<meta property="og:url" content="http://yoursite.com/2018/11/16/vue-markdown-loader源码解析/index.html">
+<meta property="og:site_name" content="Athena">
+<meta property="og:description" content="项目中遇到了需要单独加载某个 markdown 文件显示在页面中，类似于操作指引的感觉，于是找到了 vue-markdown-loader 这个工具，觉得很好用，于是我打算开个专题看一下里面都做了些什么，有助于对 webpack loader 的理解。 准备工作这里需要先了解 webpack loader 的原理，后面的代码需要配合 webpack 的官网对照着来看。中文版在这里。 首先我们需要知">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/Users/athena/Library/Application%20Support/typora-user-images/image-20181121120525127.png">
+<meta property="og:updated_time" content="2018-11-28T04:18:34.922Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-markdown-loader源码解析">
+<meta name="twitter:description" content="项目中遇到了需要单独加载某个 markdown 文件显示在页面中，类似于操作指引的感觉，于是找到了 vue-markdown-loader 这个工具，觉得很好用，于是我打算开个专题看一下里面都做了些什么，有助于对 webpack loader 的理解。 准备工作这里需要先了解 webpack loader 的原理，后面的代码需要配合 webpack 的官网对照着来看。中文版在这里。 首先我们需要知">
+<meta name="twitter:image" content="http://yoursite.com/Users/athena/Library/Application%20Support/typora-user-images/image-20181121120525127.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/16/vue-markdown-loader源码解析/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>vue-markdown-loader源码解析 | Athena</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?15fcb8c2aa27ecb358060d2600aa2502";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Athena</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">雯子写字的地方</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/athena0304" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/16/vue-markdown-loader源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue-markdown-loader源码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-16 11:48:15" itemprop="dateCreated datePublished" datetime="2018-11-16T11:48:15+08:00">2018-11-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-28 12:18:34" itemprop="dateModified" datetime="2018-11-28T12:18:34+08:00">2018-11-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>项目中遇到了需要单独加载某个 markdown 文件显示在页面中，类似于操作指引的感觉，于是找到了 vue-markdown-loader 这个工具，觉得很好用，于是我打算开个专题看一下里面都做了些什么，有助于对 webpack loader 的理解。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>这里需要先了解 webpack loader 的原理，后面的代码需要配合 webpack 的<a href="https://webpack.js.org/api/loaders/" target="_blank" rel="noopener">官网</a>对照着来看。中文版在<a href="https://webpack.docschina.org/concepts/loaders" target="_blank" rel="noopener">这里</a>。</p>
+<p>首先我们需要知道 loader 是什么，那么 loader 其实就是一个 JavaScript module，导出的是一个函数。<a href="https://github.com/webpack/loader-runner" target="_blank" rel="noopener">loader runner</a> 会调用这个函数，将前一个 loader 执行的结果或者源文件作为参数传递进来。函数中的 this 上下文由 webpack 填充，loader runner 有一些实用的方法可以允许 loader 改变其触发方式为异步，或者获取 query 参数。</p>
+<p>在这里摘录一下 loader 的特性：</p>
+<ul>
+<li>loader 支持链式传递。loader 链中每个 loader，都对前一个 loader 处理后的资源进行转换。loader 链会按照相反的顺序执行。第一个 loader 将（应用转换后的资源作为）返回结果传递给下一个 loader，依次这样执行下去。最终，在链中最后一个 loader，返回 webpack 所预期的 JavaScript。</li>
+<li>loader 可以是同步的，也可以是异步的。</li>
+<li>loader 运行在 Node.js 中，并且能够执行任何可能的操作。</li>
+<li>loader 接收查询参数。用于对 loader 传递配置。</li>
+<li>loader 也能够使用 <code>options</code> 对象进行配置。</li>
+<li>除了使用 <code>package.json</code> 常见的 <code>main</code> 属性，还可以将普通的 npm 模块导出为 loader，做法是在 <code>package.json</code> 里定义一个 <code>loader</code> 字段。</li>
+<li>插件(plugin)可以为 loader 带来更多特性。</li>
+<li>loader 能够产生额外的任意文件。</li>
+</ul>
+<p>了解原理之后，我们还要再看一篇文档，<a href="https://webpack.docschina.org/contribute/writing-a-loader/" target="_blank" rel="noopener">如何编写一个loader</a>。</p>
+<h3 id="调试工具"><a href="#调试工具" class="headerlink" title="调试工具"></a>调试工具</h3><p>如果你想更方便的调试代码，需要配置一下调试环境，这里我用的 VSCode 自带的调试工具（我找了一圈现阶段觉得这种方式最靠谱）</p>
+<p>在 debug 模式下点击配置按钮，就会生成一个 <code>.vscode/launch.json</code> 的文件，里面的配置改成如下即可：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"node"</span>,</span><br><span class="line">      <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">      <span class="attr">"name"</span>: <span class="string">"启动程序"</span>,</span><br><span class="line">      <span class="attr">"program"</span>: <span class="string">"$&#123;workspaceFolder&#125;/node_modules/webpack/bin/webpack.js"</span>,</span><br><span class="line">      <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceFolder&#125;/example"</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>其中 program 设置成 webpack 本身的文件执行的位置，cwd 设置成执行 webpack 所在的根目录。点击启动程序按钮就可以断点调试了，想看啥看啥。</p>
+<p>下面就可以开始看源码了。</p>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>首先看下目录结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── example</span><br><span class="line">│   ├── index.html</span><br><span class="line">│   ├── src</span><br><span class="line">│   │   ├── app.vue</span><br><span class="line">│   │   ├── custom.css</span><br><span class="line">│   │   ├── entry.js</span><br><span class="line">│   │   └── markdown.md</span><br><span class="line">│   └── webpack.config.js</span><br><span class="line">├── index.js</span><br><span class="line">├── lib</span><br><span class="line">│   ├── core.js</span><br><span class="line">│   └── markdown-compiler.js</span><br><span class="line">├── package-lock.json</span><br><span class="line">└── package.json</span><br></pre></td></tr></table></figure>
+<p>结构很清晰，东西也不算太多，涉及到的源码就是 <code>index.js</code>和 <code>lib</code> 下的两个 js 文件，<code>example</code> 里面的是示例。</p>
+<p>那我们就先从 <code>index.js</code> 开始看起吧。</p>
+<p>就一句话：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="built_in">require</span>(<span class="string">'./lib/core'</span>);</span><br></pre></td></tr></table></figure>
+<p>这个文件是你引入这个包的入口，这里直接去找的 <code>./lib/core</code>，于是我们继续去 <code>./lib/core</code> 看看。</p>
+<h3 id="core-js"><a href="#core-js" class="headerlink" title="core.js"></a>core.js</h3><p>在声明阶段：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">var</span> loaderUtils = <span class="built_in">require</span>(<span class="string">'loader-utils'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> markdownCompilerPath = path.resolve(__dirname, <span class="string">'markdown-compiler.js'</span>);</span><br></pre></td></tr></table></figure>
+<p>这里引用了 <a href="https://www.npmjs.com/package/loader-utils" target="_blank" rel="noopener">loader-utils</a> 和同级目录下的 <code>markdown-compiler.js</code></p>
+<p>在这里我们逐行解析 <code>core.js</code> 里面的代码，遇到什么就去查什么。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// （1）是否可缓存</span></span><br><span class="line">  <span class="keyword">this</span>.cacheable(); </span><br><span class="line">  <span class="comment">// （2）获取 options </span></span><br><span class="line">  <span class="keyword">var</span> options = loaderUtils.getOptions(<span class="keyword">this</span>) || &#123;&#125;; </span><br><span class="line">  <span class="comment">// （3）为 Compilation 对象添加 __vueMarkdownOptions__ 属性</span></span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(<span class="keyword">this</span>._compilation, <span class="string">'__vueMarkdownOptions__'</span>, &#123;</span><br><span class="line">    value: options,</span><br><span class="line">    enumerable: <span class="literal">false</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// (4) 获取资源文件的路径</span></span><br><span class="line">  <span class="keyword">var</span> filePath = <span class="keyword">this</span>.resourcePath;</span><br><span class="line">  <span class="comment">// (5) 生成 result</span></span><br><span class="line">  <span class="keyword">var</span> result =</span><br><span class="line">    <span class="string">'module.exports = require('</span> +</span><br><span class="line">    loaderUtils.stringifyRequest(</span><br><span class="line">      <span class="keyword">this</span>,</span><br><span class="line">      <span class="string">'!!vue-loader!'</span> +</span><br><span class="line">        markdownCompilerPath +</span><br><span class="line">        <span class="string">'?raw!'</span> +</span><br><span class="line">        filePath +</span><br><span class="line">        (<span class="keyword">this</span>.resourceQuery || <span class="string">''</span>)</span><br><span class="line">    ) +</span><br><span class="line">    <span class="string">');'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(result)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>首先可以看到这个文件最后是导出了一个 result，参数传进来的是 source，也就是之前 loader 产生过的结果或者是源文件，有个上下文 this。</p>
+<p><strong>（1）是否可缓存</strong></p>
+<p><code>this.cacheable();</code> 对应的是<a href="https://webpack.docschina.org/api/loaders/#this-cacheable" target="_blank" rel="noopener">是否可缓存</a>。</p>
+<blockquote>
+<p>默认情况下，loader 的处理结果会被标记为可缓存。调用这个方法然后传入 <code>false</code>，可以关闭 loader 的缓存。</p>
+<p>一个可缓存的 loader 在输入和相关依赖没有变化时，必须返回相同的结果。这意味着 loader 除了 <code>this.addDependency</code> 里指定的以外，不应该有其它任何外部依赖。</p>
+</blockquote>
+<p><strong>（2）获取 options</strong> </p>
+<p>参考 loader-utils 的<a href="https://www.npmjs.com/package/loader-utils#getoptions" target="_blank" rel="noopener">文档</a></p>
+<p>是检索调用 loader 的 options 的推荐方式。</p>
+<p>本文中为<code>{}</code></p>
+<p><strong>（3）为 Compilation 对象添加<code>__vueMarkdownOptions__</code> 属性</strong></p>
+<p><strong>（4）获取资源文件的路径</strong></p>
+<p>获取到的路径是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;vue-markdown-loader/example/src/markdown.md&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>（5）生成 result</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;module.exports = require(&quot;!!vue-loader!../../lib/markdown-compiler.js?raw!./markdown.md&quot;);&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>参数 source</strong></p>
+<p>这里传进来的 source 就是原始文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;# Hello`&lt;span&gt;&#123;&#123;sss&#125;&#125;&lt;/span&gt;`&gt; This is test.- How are you?- Fine, Thank you, and you?- I&apos;m fine， too. Thank you.- 🌚```javascriptimport Vue from &apos;vue&apos;Vue.config.debug = true```&lt;div class=&quot;test&quot;&gt;  &#123;&#123; model &#125;&#125; test&lt;/div&gt;&lt;compo&gt;&#123;&#123; model &#125;&#125;&lt;/compo&gt;&lt;div  class=&quot;abc&quot;  @click=&quot;show = false&quot;&gt;  啊哈哈哈&lt;/div&gt;&gt; All script or style tags in html mark will be extracted.Script will be excuted, and style will be added to document head.&gt; Notice if there is a string instance which contains special word &quot;&amp;lt;/script&gt;&quot;, it will fetch a SyntaxError.&gt; Due to the complexity to solve it, just don&apos;t do that.```html&lt;style scoped&gt;  .test &#123;    background-color: green;  &#125;&lt;/style&gt;&lt;style scoped&gt;  .abc &#123;    background-color: yellow;  &#125;&lt;/style&gt;&lt;script&gt;  let a=1&lt;2;  let b=&quot;&lt;-forget it-/script&gt;&quot;;  console.log(&quot;***This script tag is successfully extracted and excuted.***&quot;)  module.exports = &#123;    components: &#123;      compo: &#123;        render(h) &#123;          return h(&apos;div&apos;, &#123;            style: &#123;              background: &apos;red&apos;            &#125;          &#125;, this.$slots.default);        &#125;      &#125;    &#125;,    data () &#123;      return &#123;        model: &apos;abc&apos;      &#125;    &#125;  &#125;&lt;/script&gt;jjjjjjjjjjjjjjjjjjjjjj&lt;template&gt;  &lt;div&gt;&lt;/div&gt;&lt;/template&gt;```&lt;div&gt;&lt;/div&gt;sadfsfs大家哦哦好啊谁都发生地方上的冯绍峰s&gt; sahhhh&lt;compo&gt;&#123;&#123; model &#125;&#125;&lt;/compo&gt;```html&lt;compo&gt;&#123;&#123;model &#125;&#125;&#123;&#123;model &#125;&#125;&#123;&#123;model &#125;&#125;&#123;&#123;model &#125;&#125;&#123;&#123; model &#125;&#125;&lt;/compo&gt;```&lt;style src=&quot;./custom.css&quot;&gt;&lt;/style&gt;## 引入 style 文件&lt;div class=&quot;custom&quot;&gt;  原谅色&lt;/div&gt;&quot;</span><br></pre></td></tr></table></figure>
+<p>通过 require 里的参数，我们知道，这个 vue-markdown-loader loader 首先会加载 <code>.md</code> 文件，然后通过 <code>markdown-compiler.js?raw</code> 来处理该文件，再通过 <code>vue-loader</code> 处理。</p>
+<p>所以我们需要继续去 <code>markdown-compiler.js</code> 里一探究竟。</p>
+<h3 id="markdown-compiler-js"><a href="#markdown-compiler-js" class="headerlink" title="markdown-compiler.js"></a>markdown-compiler.js</h3><p>首先我们看一下引入声明部分：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> loaderUtils = <span class="built_in">require</span>(<span class="string">'loader-utils'</span>);</span><br><span class="line"><span class="keyword">var</span> hljs = <span class="built_in">require</span>(<span class="string">'highlight.js'</span>);</span><br><span class="line"><span class="keyword">var</span> cheerio = <span class="built_in">require</span>(<span class="string">'cheerio'</span>);</span><br><span class="line"><span class="keyword">var</span> markdown = <span class="built_in">require</span>(<span class="string">'markdown-it'</span>);</span><br><span class="line"><span class="keyword">var</span> Token = <span class="built_in">require</span>(<span class="string">'markdown-it/lib/token'</span>);</span><br></pre></td></tr></table></figure>
+<p>再看下面的代码之前，有必要了解一下上面引入的东西</p>
+<h4 id="markdown-it"><a href="#markdown-it" class="headerlink" title="markdown-it"></a><a href="https://www.npmjs.com/package/markdown-it" target="_blank" rel="noopener">markdown-it</a></h4><p>将 markdown 转换成 html 的本尊。</p>
+<p>有两种使用方式：render函数和传递 options</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node.js, "classic" way:</span></span><br><span class="line"><span class="keyword">var</span> MarkdownIt = <span class="built_in">require</span>(<span class="string">'markdown-it'</span>),</span><br><span class="line">    md = <span class="keyword">new</span> MarkdownIt();</span><br><span class="line"><span class="keyword">var</span> result = md.render(<span class="string">'# markdown-it rulezz!'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// node.js, the same, but with sugar:</span></span><br><span class="line"><span class="keyword">var</span> md = <span class="built_in">require</span>(<span class="string">'markdown-it'</span>)();</span><br><span class="line"><span class="keyword">var</span> result = md.render(<span class="string">'# markdown-it rulezz!'</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// full options list (defaults)</span></span><br><span class="line"><span class="keyword">var</span> md = <span class="built_in">require</span>(<span class="string">'markdown-it'</span>)(&#123;</span><br><span class="line">  html:         <span class="literal">false</span>,        <span class="comment">// Enable HTML tags in source</span></span><br><span class="line">  xhtmlOut:     <span class="literal">false</span>,        <span class="comment">// Use '/' to close single tags (&lt;br /&gt;).</span></span><br><span class="line">                              <span class="comment">// This is only for full CommonMark compatibility.</span></span><br><span class="line">  breaks:       <span class="literal">false</span>,        <span class="comment">// Convert '\n' in paragraphs into &lt;br&gt;</span></span><br><span class="line">  langPrefix:   <span class="string">'language-'</span>,  <span class="comment">// CSS language prefix for fenced blocks. Can be</span></span><br><span class="line">                              <span class="comment">// useful for external highlighters.</span></span><br><span class="line">  linkify:      <span class="literal">false</span>,        <span class="comment">// Autoconvert URL-like text to links</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Enable some language-neutral replacement + quotes beautification</span></span><br><span class="line">  typographer:  <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Double + single quotes replacement pairs, when typographer enabled,</span></span><br><span class="line">  <span class="comment">// and smartquotes on. Could be either a String or an Array.</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// For example, you can use '«»„“' for Russian, '„“‚‘' for German,</span></span><br><span class="line">  <span class="comment">// and ['«\xA0', '\xA0»', '‹\xA0', '\xA0›'] for French (including nbsp).</span></span><br><span class="line">  quotes: <span class="string">'“”‘’'</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Highlighter function. Should return escaped HTML,</span></span><br><span class="line">  <span class="comment">// or '' if the source string is not changed and should be escaped externaly.</span></span><br><span class="line">  <span class="comment">// If result starts with &lt;pre... internal wrapper is skipped.</span></span><br><span class="line">  highlight: <span class="function"><span class="keyword">function</span> (<span class="params"><span class="regexp">/*str, lang*/</span></span>) </span>&#123; <span class="keyword">return</span> <span class="string">''</span>; &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="highlight-js"><a href="#highlight-js" class="headerlink" title="highlight.js"></a><a href="https://highlightjs.org/" target="_blank" rel="noopener">highlight.js</a></h4><p>语法高亮工具</p>
+<h4 id="cheerio"><a href="#cheerio" class="headerlink" title="cheerio"></a><a href="https://www.npmjs.com/package/cheerio" target="_blank" rel="noopener">cheerio</a></h4><p>Fast, flexible &amp; lean implementation of core jQuery designed specifically for the server.</p>
+<p>接下来，我们先看几个声明的函数：</p>
+<h4 id="addVuePreviewAttr"><a href="#addVuePreviewAttr" class="headerlink" title="addVuePreviewAttr"></a>addVuePreviewAttr</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * `&lt;pre&gt;&lt;/pre&gt;` =&gt; `&lt;pre v-pre&gt;&lt;/pre&gt;`</span></span><br><span class="line"><span class="comment"> * `&lt;code&gt;&lt;/code&gt;` =&gt; `&lt;code v-pre&gt;&lt;/code&gt;`</span></span><br><span class="line"><span class="comment"> * @param  &#123;string&#125; str</span></span><br><span class="line"><span class="comment"> * @return &#123;string&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> addVuePreviewAttr = <span class="function"><span class="keyword">function</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> str.replace(<span class="regexp">/(&lt;pre|&lt;code)/g</span>, <span class="string">'$1 v-pre'</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个函数就是查找 html 标签中所有 <code>&lt;pre</code> 或者 <code>&lt;code</code>，替换成  <code>&lt;pre v-pre</code> 和 <code>&lt;code v-pre</code></p>
+<h4 id="renderHighlight"><a href="#renderHighlight" class="headerlink" title="renderHighlight"></a>renderHighlight</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * renderHighlight</span></span><br><span class="line"><span class="comment"> * @param  &#123;string&#125; str</span></span><br><span class="line"><span class="comment"> * @param  &#123;string&#125; lang</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> renderHighlight = <span class="function"><span class="keyword">function</span>(<span class="params">str, lang</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!(lang &amp;&amp; hljs.getLanguage(lang))) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> hljs.highlight(lang, str, <span class="literal">true</span>).value;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>返回通过 highlight.js 高亮后的数据</p>
+<h4 id="renderVueTemplate"><a href="#renderVueTemplate" class="headerlink" title="renderVueTemplate"></a>renderVueTemplate</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * html =&gt; vue file template</span></span><br><span class="line"><span class="comment"> * @param  &#123;[type]&#125; html [description]</span></span><br><span class="line"><span class="comment"> * @return &#123;[type]&#125;      [description]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> renderVueTemplate = <span class="function"><span class="keyword">function</span>(<span class="params">html, wrapper</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 用 cheerio 提取参数传进来的要进行处理的 html</span></span><br><span class="line">  <span class="keyword">var</span> $ = cheerio.load(html, &#123;</span><br><span class="line">    decodeEntities: <span class="literal">false</span>, <span class="comment">// 是否解码文档实体，默认为 false</span></span><br><span class="line">    lowerCaseAttributeNames: <span class="literal">false</span>, <span class="comment">// 是否将所有属性名设置成小写，会对速度有影响，默认为 false</span></span><br><span class="line">    lowerCaseTags: <span class="literal">false</span> <span class="comment">// 是否将所有标签转换成小写</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 将原 html 中的 style 和第一个 script 标签缓存起来</span></span><br><span class="line">  <span class="keyword">var</span> output = &#123;</span><br><span class="line">    style: $.html(<span class="string">'style'</span>),</span><br><span class="line">    <span class="comment">// get only the first script child. Causes issues if multiple script files in page.</span></span><br><span class="line">    script: $.html($(<span class="string">'script'</span>).first())</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> result;</span><br><span class="line"></span><br><span class="line">  $(<span class="string">'style'</span>).remove();</span><br><span class="line">  $(<span class="string">'script'</span>).remove();</span><br><span class="line">  <span class="comment">// 生成最后的结果</span></span><br><span class="line">  result =</span><br><span class="line">    <span class="string">`&lt;template&gt;&lt;<span class="subst">$&#123;wrapper&#125;</span>&gt;`</span> +</span><br><span class="line">    $.html() +</span><br><span class="line">    <span class="string">`&lt;/<span class="subst">$&#123;wrapper&#125;</span>&gt;&lt;/template&gt;\n`</span> +</span><br><span class="line">    output.style +</span><br><span class="line">    <span class="string">'\n'</span> +</span><br><span class="line">    output.script;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这是整个 loader 的核心功能，就是把 html 包裹一层 vue 的语法变成一个 vue 的组件，然后再让后面的 vue-loader 接收。这里用到了 cheerio 来做一些简单的 DOM 操作。</p>
+<p>说完了函数声明，就继续来看整个处理过程：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// (1) 是否可缓存</span></span><br><span class="line">  <span class="keyword">this</span>.cacheable &amp;&amp; <span class="keyword">this</span>.cacheable();</span><br><span class="line">  <span class="keyword">var</span> parser, preprocess;</span><br><span class="line">  <span class="comment">// （2）获取参数，此时把外面传进来的解析成 Object &#123;raw: true&#125;(来自core.js)</span></span><br><span class="line">  <span class="keyword">var</span> params = loaderUtils.getOptions(<span class="keyword">this</span>) || &#123;&#125;;</span><br><span class="line">  <span class="comment">// （3）获取 __vueMarkdownOptions__(来自core.js)</span></span><br><span class="line">  <span class="keyword">var</span> vueMarkdownOptions = <span class="keyword">this</span>._compilation.__vueMarkdownOptions__;</span><br><span class="line">  <span class="comment">// （4）继承 vueMarkdownOptions 的原型，赋值给opts</span></span><br><span class="line">  <span class="keyword">var</span> opts = vueMarkdownOptions ? <span class="built_in">Object</span>.create(vueMarkdownOptions.__proto__) : &#123;&#125;; <span class="comment">// inherit prototype</span></span><br><span class="line">  <span class="keyword">var</span> preventExtract = <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// （5）合并所有来源的参数、属性，汇总给opts</span></span><br><span class="line">  opts = <span class="built_in">Object</span>.assign(opts, params, vueMarkdownOptions); <span class="comment">// assign attributes</span></span><br><span class="line">  <span class="comment">// （6）判断 options 中 preventExtract 是都为 true</span></span><br><span class="line">  <span class="keyword">if</span> (opts.preventExtract) &#123;</span><br><span class="line">    <span class="keyword">delete</span> opts.preventExtract;</span><br><span class="line">    preventExtract = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// （7）判断 options 中 render 的类型</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> opts.render === <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="comment">// （8）如果是 function，parser 就是 opts</span></span><br><span class="line">    parser = opts;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// （9）如果不是 function，为 opts 添加一些属性，以及后面的一系列操作。opts 最后是作为 option 传入 markdown-it 中的。</span></span><br><span class="line">    opts = <span class="built_in">Object</span>.assign(</span><br><span class="line">      &#123;</span><br><span class="line">        preset: <span class="string">'default'</span>,</span><br><span class="line">        html: <span class="literal">true</span>,</span><br><span class="line">        highlight: renderHighlight,</span><br><span class="line">        wrapper: <span class="string">'section'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      opts</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// （10）初始化 插件 plugins</span></span><br><span class="line">    <span class="keyword">var</span> plugins = opts.use;</span><br><span class="line">    <span class="comment">// （11）初始化 预处理 preprocess</span></span><br><span class="line">    preprocess = opts.preprocess;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span> opts.use;</span><br><span class="line">    <span class="keyword">delete</span> opts.preprocess;</span><br><span class="line">      </span><br><span class="line">    <span class="comment">// （12）在这里初始化 markdown-it</span></span><br><span class="line">    parser = markdown(opts.preset, opts);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// （13）添加 ruler：从 html token 中提取 script 和 style</span></span><br><span class="line">    <span class="comment">//add ruler:extract script and style tags from html token content</span></span><br><span class="line">    !preventExtract &amp;&amp;</span><br><span class="line">      parser.core.ruler.push(<span class="string">'extract_script_or_style'</span>, <span class="function"><span class="keyword">function</span> <span class="title">replace</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        state</span></span></span><br><span class="line"><span class="function"><span class="params">      </span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> tag_reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'&lt;(script|style)(?:[^&lt;]|&lt;)+&lt;/\\1&gt;'</span>, <span class="string">'g'</span>);</span><br><span class="line">        <span class="keyword">let</span> newTokens = [];</span><br><span class="line">        state.tokens</span><br><span class="line">          .filter(<span class="function"><span class="params">token</span> =&gt;</span> token.type == <span class="string">'fence'</span> &amp;&amp; token.info == <span class="string">'html'</span>)</span><br><span class="line">          .forEach(<span class="function"><span class="params">token</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> tokens = (token.content.match(tag_reg) || []).map(<span class="function"><span class="params">content</span> =&gt;</span> &#123;</span><br><span class="line">              <span class="keyword">let</span> t = <span class="keyword">new</span> Token(<span class="string">'html_block'</span>, <span class="string">''</span>, <span class="number">0</span>);</span><br><span class="line">              t.content = content;</span><br><span class="line">              <span class="keyword">return</span> t;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">if</span> (tokens.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">              newTokens.push.apply(newTokens, tokens);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">        state.tokens.push.apply(state.tokens, newTokens);</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="comment">// （14）如果有插件，就应用一下</span></span><br><span class="line">    <span class="keyword">if</span> (plugins) &#123;</span><br><span class="line">      plugins.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">plugin</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(plugin)) &#123;</span><br><span class="line">          parser.use.apply(parser, plugin);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          parser.use(plugin);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// （15）覆盖默认的 parser rules，在 'code' 和 'pre' 标签上添加 v-pre 属性</span></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * override default parser rules by adding v-pre attribute on 'code' and 'pre' tags</span></span><br><span class="line"><span class="comment">   * @param &#123;Array&lt;string&gt;&#125; rules rules to override</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">overrideParserRules</span>(<span class="params">rules</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (parser &amp;&amp; parser.renderer &amp;&amp; parser.renderer.rules) &#123;</span><br><span class="line">      <span class="keyword">var</span> parserRules = parser.renderer.rules;</span><br><span class="line">      rules.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">rule</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (parserRules &amp;&amp; parserRules[rule]) &#123;</span><br><span class="line">          <span class="keyword">var</span> defaultRule = parserRules[rule];</span><br><span class="line">          parserRules[rule] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> addVuePreviewAttr(defaultRule.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));</span><br><span class="line">          &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// （16）覆盖这三种默认规则</span></span><br><span class="line">  overrideParserRules([<span class="string">'code_inline'</span>, <span class="string">'code_block'</span>, <span class="string">'fence'</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// （17）如果有预处理，执行一下</span></span><br><span class="line">  <span class="keyword">if</span> (preprocess) &#123;</span><br><span class="line">    source = preprocess.call(<span class="keyword">this</span>, parser, source);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// （18）将 source 中所有的 @ 替换成 '__at__'</span></span><br><span class="line">  source = source.replace(<span class="regexp">/@/g</span>, <span class="string">'__at__'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> content = parser.render(source).replace(<span class="regexp">/__at__/g</span>, <span class="string">'@'</span>);</span><br><span class="line">  <span class="keyword">var</span> result = renderVueTemplate(content, opts.wrapper);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (opts.raw) &#123;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'module.exports = '</span> + <span class="built_in">JSON</span>.stringify(result);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="/Users/athena/Library/Application Support/typora-user-images/image-20181121120525127.png" alt="image-20181121120525127"></p>
+<p><strong>（6）preventExtract</strong></p>
+<p>preventExtract 是 vue-markdown-loader 提供的一个<a href="https://www.npmjs.com/package/vue-markdown-loader?activeTab=readme#preventextract" target="_blank" rel="noopener">选项</a></p>
+<blockquote>
+<p>Since <code>v2.0.0</code>, this loader will automatically extract script and style tags from html token content (#26). If you do not need, you can set this option</p>
+</blockquote>
+<p><strong>（13）添加 ruler：从 html token 中提取 script 和 style</strong></p>
+<p>走到这里，就需要对 token 有一个认识才行，所以建议先看一下<a href="https://www.jianshu.com/p/fb0ee355915c" target="_blank" rel="noopener">这篇文章</a>。我摘录一部分：</p>
+<blockquote>
+<p>当你创建了一个 <code>md = require(&#39;markdown-it&#39;)()</code> 对象之后，就可以用它来渲染 MD 文档了，例如: <code>md.render(&quot;# I&#39;m H1 &quot;)</code>。这个渲染过程分为主要的两步:</p>
+<ol>
+<li>将 MD 文档 Parsing 为 Tokens。</li>
+<li>渲染这个 Tokens。</li>
+</ol>
+<p>Parsing 的过程是，首先创建一个 Core Parser，这个 Core Parser 包含一系列的缺省 Rules。这些 Rules 将顺序执行，每个 Rule 都在前面的 Tokens 的基础上，要么修改原来的 Token，要么添加新的 Token。这个 Rules 的链条被称为 Core Chain。</p>
+<p>在所有 Tokens 都获得之后，就可以渲染了。渲染就是把特定 Token 转变为特定的 HTML 的过程。</p>
+<p>Markdown-It 允许你为特定的 Token Type 挂载自己的渲染函数，这个函数称为 Renderer Rule。Markdown-It 已经定义了几个 缺省的 Renderer Rules</p>
+</blockquote>
+<p><strong>（14）如果有插件，就应用一下</strong></p>
+<p><a href="https://markdown-it.github.io/markdown-it/#MarkdownIt.use" target="_blank" rel="noopener">MarkdownIt.use</a></p>
+<p>在当前的解析实例中应用指定的插件。</p>
+<p>最终输出的结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&lt;template&gt;&lt;section&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;p&gt;&lt;code v-pre=&quot;&quot;&gt;&amp;lt;span&amp;gt;&#123;&#123;sss&#125;&#125;&amp;lt;/span&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This is test.&lt;/p&gt;&lt;/blockquote&gt;&lt;ul&gt;&lt;li&gt;How are you?&lt;/li&gt;&lt;li&gt;Fine, Thank you, and you?&lt;/li&gt;&lt;li&gt;I&apos;m fine， too. Thank you.&lt;/li&gt;&lt;li&gt;🌚&lt;/li&gt;&lt;/ul&gt;&lt;pre v-pre=&quot;&quot;&gt;&lt;code v-pre=&quot;&quot; class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Vue &lt;span class=&quot;hljs-keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&apos;vue&apos;&lt;/span&gt;Vue.config.debug = &lt;span class=&quot;hljs-literal&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div class=&quot;test&quot;&gt;  &#123;&#123; model &#125;&#125; test&lt;/div&gt;&lt;p&gt;&lt;compo&gt;&#123;&#123; model &#125;&#125;&lt;/compo&gt;&lt;/p&gt;&lt;div class=&quot;abc&quot; @click=&quot;show = false&quot;&gt;  啊哈哈哈&lt;/div&gt;&lt;blockquote&gt;&lt;p&gt;All script or style tags in html mark will be extracted.Script will be excuted, and style will be added to document head.Notice if there is a string instance which contains special word &amp;quot;&amp;lt;/script&amp;gt;&amp;quot;, it will fetch a SyntaxError.Due to the complexity to solve it, just don&apos;t do that.&lt;/p&gt;&lt;/blockquote&gt;&lt;pre v-pre=&quot;&quot;&gt;&lt;code v-pre=&quot;&quot; class=&quot;language-html&quot;&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;style&lt;/span&gt; &lt;span class=&quot;hljs-attr&quot;&gt;scoped&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;css&quot;&gt;  &lt;span class=&quot;hljs-selector-class&quot;&gt;.test&lt;/span&gt; &#123;    &lt;span class=&quot;hljs-attribute&quot;&gt;background-color&lt;/span&gt;: green;  &#125;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;style&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;style&lt;/span&gt; &lt;span class=&quot;hljs-attr&quot;&gt;scoped&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;css&quot;&gt;  &lt;span class=&quot;hljs-selector-class&quot;&gt;.abc&lt;/span&gt; &#123;    &lt;span class=&quot;hljs-attribute&quot;&gt;background-color&lt;/span&gt;: yellow;  &#125;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;style&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;  &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt; a=&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;&amp;lt;&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;;  &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt; b=&lt;span class=&quot;hljs-string&quot;&gt;&quot;&amp;lt;-forget it-/script&amp;gt;&quot;&lt;/span&gt;;  &lt;span class=&quot;hljs-built_in&quot;&gt;console&lt;/span&gt;.log(&lt;span class=&quot;hljs-string&quot;&gt;&quot;***This script tag is successfully extracted and excuted.***&quot;&lt;/span&gt;)  &lt;span class=&quot;hljs-built_in&quot;&gt;module&lt;/span&gt;.exports = &#123;    &lt;span class=&quot;hljs-attr&quot;&gt;components&lt;/span&gt;: &#123;      &lt;span class=&quot;hljs-attr&quot;&gt;compo&lt;/span&gt;: &#123;        render(h) &#123;          &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; h(&lt;span class=&quot;hljs-string&quot;&gt;&apos;div&apos;&lt;/span&gt;, &#123;            &lt;span class=&quot;hljs-attr&quot;&gt;style&lt;/span&gt;: &#123;              &lt;span class=&quot;hljs-attr&quot;&gt;background&lt;/span&gt;: &lt;span class=&quot;hljs-string&quot;&gt;&apos;red&apos;&lt;/span&gt;            &#125;          &#125;, &lt;span class=&quot;hljs-keyword&quot;&gt;this&lt;/span&gt;.$slots.default);        &#125;      &#125;    &#125;,    data () &#123;      &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; &#123;        &lt;span class=&quot;hljs-attr&quot;&gt;model&lt;/span&gt;: &lt;span class=&quot;hljs-string&quot;&gt;&apos;abc&apos;&lt;/span&gt;      &#125;    &#125;  &#125;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;jjjjjjjjjjjjjjjjjjjjjj&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;template&lt;/span&gt;&amp;gt;&lt;/span&gt;  &lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;template&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;div&gt;&lt;/div&gt;&lt;p&gt;sadfsfs&lt;/p&gt;&lt;p&gt;大家哦哦好啊谁都发生地方上的冯绍峰s&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;sahhhh&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;&lt;compo&gt;&#123;&#123; model &#125;&#125;&lt;/compo&gt;&lt;/p&gt;&lt;pre v-pre=&quot;&quot;&gt;&lt;code v-pre=&quot;&quot; class=&quot;language-html&quot;&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;compo&lt;/span&gt;&amp;gt;&lt;/span&gt;&#123;&#123;model &#125;&#125;&#123;&#123;model &#125;&#125;&#123;&#123;model &#125;&#125;&#123;&#123;model &#125;&#125;&#123;&#123; model &#125;&#125;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;/&lt;span class=&quot;hljs-name&quot;&gt;compo&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;引入 style 文件&lt;/h2&gt;&lt;div class=&quot;custom&quot;&gt;  原谅色&lt;/div&gt;&lt;/section&gt;&lt;/template&gt;&lt;style src=&quot;./custom.css&quot;&gt;&lt;/style&gt;&lt;style scoped&gt;  .test &#123;    background-color: green;  &#125;&lt;/style&gt;&lt;style scoped&gt;  .abc &#123;    background-color: yellow;  &#125;&lt;/style&gt;&lt;script&gt;  let a=1&lt;2;  let b=&quot;&lt;-forget it-/script&gt;&quot;;  console.log(&quot;***This script tag is successfully extracted and excuted.***&quot;)  module.exports = &#123;    components: &#123;      compo: &#123;        render(h) &#123;          return h(&apos;div&apos;, &#123;            style: &#123;              background: &apos;red&apos;            &#125;          &#125;, this.$slots.default);        &#125;      &#125;    &#125;,    data () &#123;      return &#123;        model: &apos;abc&apos;      &#125;    &#125;  &#125;&lt;/script&gt;&quot;</span><br></pre></td></tr></table></figure>
+<p>如果中间哪步不太明白，也可以自行断点调试。总的思路还是很清晰的，就是把 <code>.md</code> 文件通过 <code>markdown-it</code> 转成 <code>html</code>，中间通过选项设置高亮，然后再包裹上 vue 组件的语法形式即可，后续再应用 <code>vue-loader</code> 做后面的处理。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_079b3d1ee299_258.jpg" alt="雯子 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>更多内容请关注我的公众号-雯子推</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/06/3基于element-ui封装的组件发布npm包/" rel="next" title="使用Vue CLI 3将基于element-ui二次封装的组件发布到npm">
+                <i class="fa fa-chevron-left"></i> 使用Vue CLI 3将基于element-ui二次封装的组件发布到npm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/19/日本之海游馆/" rel="prev" title="日本之海游馆">
+                日本之海游馆 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="雯子" />
+            
+              <p class="site-author-name" itemprop="name">雯子</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/athena0304" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/oxw" target="_blank" title="segmentfault"><i class="fa fa-fw fa-globe"></i>segmentfault</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/582419f30ce4630058b08dc0" target="_blank" title="掘金"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调试工具"><span class="nav-number">1.1.</span> <span class="nav-text">调试工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">2.</span> <span class="nav-text">目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#core-js"><span class="nav-number">2.1.</span> <span class="nav-text">core.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#markdown-compiler-js"><span class="nav-number">2.2.</span> <span class="nav-text">markdown-compiler.js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#markdown-it"><span class="nav-number">2.2.1.</span> <span class="nav-text">markdown-it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#highlight-js"><span class="nav-number">2.2.2.</span> <span class="nav-text">highlight.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cheerio"><span class="nav-number">2.2.3.</span> <span class="nav-text">cheerio</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addVuePreviewAttr"><span class="nav-number">2.2.4.</span> <span class="nav-text">addVuePreviewAttr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#renderHighlight"><span class="nav-number">2.2.5.</span> <span class="nav-text">renderHighlight</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#renderVueTemplate"><span class="nav-number">2.2.6.</span> <span class="nav-text">renderVueTemplate</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雯子</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -320,6 +320,396 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/11/Element-ui升级2.0后初体验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/11/Element-ui升级2.0后初体验/" itemprop="url">
+                  Element-ui升级2.0后初体验
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-12-11 10:55:52" itemprop="dateCreated datePublished" datetime="2017-12-11T10:55:52+08:00">2017-12-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-01 11:04:52" itemprop="dateModified" datetime="2018-11-01T11:04:52+08:00">2018-11-01</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果你在使用Vue和Element-ui进行前端开发，那么就会知道Element在2017年10月27日升级到了2.0.0 Carbon的版本，改动可以说还是有些大的。可想而知，有的人选择按兵不动，有的人选择先睹为快。</p>
+<p>现在打开Element-ui的官网，切换到1.4.12的文档，可以看到一个提示消息框：</p>
+<blockquote>
+<p>Element 1.x 已停止维护，请升级至 2.x</p>
+</blockquote>
+<p>所以还是建议尽早升级比较好，顺便也可以一起升级一下vue到2.5版本以上。下面我会介绍一些我在升级项目的过程中遇到的问题和需要注意的地方。</p>
+<p>升级后的版本：<br>element-ui：2.0.4（最新版本已经到2.0.7）<br>vue：2.5.4</p>
+<p>首先说一下整体印象，由于我做的这个项目是管理控制台类型的，升级后第一印象是页面变“白”了，也可以说变淡了，尤其是侧边栏、导航菜单，以前是可以选择深色的主题，现在没有这个<code>theme-default</code>预设了，新增了新的主题<code>chalk</code>，导致整个页面都是白白的。个人理解以后官方可能会出别的系列的主题，这样方便拆解和设计。<br>表格的表头原来也是有背景颜色区分的，现在的chalk主题下表头的颜色区分不是很明显。然后之前用的tag、按钮之类的都变大了，这是在什么都没设置，直接升级以后的第一眼效果。</p>
+<p>然后下面说一下我遇到的需要修改的地方。</p>
+<h4 id="1-引入的css文件路径变了"><a href="#1-引入的css文件路径变了" class="headerlink" title="1. 引入的css文件路径变了"></a>1. 引入的css文件路径变了</h4><p>原来是：<br><code>import &#39;element-ui/lib/theme-default/index.css&#39;</code><br>现在需要修改成：<br><code>import &#39;element-ui/lib/theme-chalk/index.css&#39;</code></p>
+<h4 id="2-样式引入的优先级问题"><a href="#2-样式引入的优先级问题" class="headerlink" title="2. 样式引入的优先级问题"></a>2. 样式引入的优先级问题</h4><p>之前遇到这样一个问题，有的组件样式需要进行定制覆盖，于是就在组件里面用css scoped进行了同类名的样式替换，这样在开发环境下效果是符合预期的，但是打包编译后，优先级就变了。于是发现是在<code>main.js</code>引入文件路径顺序的问题，之前一度以为不需要顺序，但其实还是有影响的。</p>
+<p>原来的配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></span><br><span class="line"></span><br><span class="line">Vue.use(ElementUI)</span><br></pre></td></tr></table></figure>
+<p>修改后的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span> <span class="comment">//这里要把App的引用顺序放到最后</span></span><br><span class="line"></span><br><span class="line">Vue.use(ElementUI)</span><br></pre></td></tr></table></figure>
+<h4 id="3-Icon的变化"><a href="#3-Icon的变化" class="headerlink" title="3. Icon的变化"></a>3. Icon的变化</h4><p>原来在<code>input</code>组件中可以用<code>icon</code>这个属性指定icon，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-input</span><br><span class="line">  icon=&quot;search&quot;&gt;</span><br><span class="line">&lt;/el-input&gt;</span><br></pre></td></tr></table></figure>
+<p>现在的话，这样写是不生效的：</p>
+<blockquote>
+<p>可以通过<code>prefix-icon</code> 和 <code>suffix-icon</code> 属性在 input 组件首部和尾部增加显示图标，也可以通过 slot 来放置图标。</p>
+</blockquote>
+<p>所以如果你在项目中的<code>input</code>里用到了<code>icon</code>的属性，需要改成<code>prefix-icon</code> 或 <code>suffix-icon</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-input</span><br><span class="line">	suffix-icon=&quot;el-icon-search&quot;&gt;</span><br><span class="line">&lt;/el-input&gt;</span><br></pre></td></tr></table></figure>
+<p>但是button组件就还是可以使用<code>icon</code>属性，但需要传入完整的图标类名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-button type=&quot;primary&quot; icon=&quot;el-icon-search&quot;&gt;搜索&lt;/el-button&gt;</span><br></pre></td></tr></table></figure></p>
+<p>原因是：</p>
+<blockquote>
+<p>为了方便使用第三方图标，Button 的 <code>icon</code> 属性、Input 的 <code>prefix-icon</code> 和 <code>suffix-icon</code> 属性、Steps 的 <code>icon</code> 属性现在需要传入完整的图标类名</p>
+</blockquote>
+<h4 id="4-modal的变化"><a href="#4-modal的变化" class="headerlink" title="4. modal的变化"></a>4. modal的变化</h4><p>之前给不需要宽度的modal设了<code>width: auto;</code>，这样如果里面内容为空的时候基本没有宽度，更新后，如果没有内容，默认会铺满整个屏幕。</p>
+<h4 id="5-NavMenu-导航菜单"><a href="#5-NavMenu-导航菜单" class="headerlink" title="5. NavMenu 导航菜单"></a>5. NavMenu 导航菜单</h4><p>原来的menu是有两个样式供选择的，<code>theme</code>有两个可选值<code>light, dark</code>，现在没有这个属性了，默认就是chalk主题的白色，如果想要定制，需要另外设置。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>类型</th>
+<th>可选值</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>background-color</td>
+<td>菜单的背景色（仅支持 hex 格式）</td>
+<td>string</td>
+<td>—</td>
+<td>#ffffff</td>
+</tr>
+<tr>
+<td>text-color</td>
+<td>菜单的文字颜色（仅支持 hex 格式）</td>
+<td>string</td>
+<td>—</td>
+<td>#409EFF</td>
+</tr>
+<tr>
+<td>active-text-color</td>
+<td>当前激活菜单的文字颜色（仅支持 hex 格式）</td>
+<td>string</td>
+<td>—</td>
+<td>#409EFF</td>
+</tr>
+</tbody>
+</table>
+<p>但是这样设置会有弊端，如果项目经过定制样式改过主题颜色，那么这里就需要进行单独设置，而且还仅支持 hex 格式，这就需要计算出来颜色的具体值，而不能通过scss变量来控制。</p>
+<h4 id="6-slot-scope"><a href="#6-slot-scope" class="headerlink" title="6. slot-scope"></a>6. slot-scope</h4><p>这其实是[vue在2.5.0里的变化][1]<br>把<code>scope</code>换成了<code>slop-scope</code><br>所以在element里面升级后，也把相应的用到scope的地方做修改就行了</p>
+<h4 id="7-checkbox"><a href="#7-checkbox" class="headerlink" title="7. checkbox"></a>7. checkbox</h4><p>在更新后测试的时候发现checkbox挂了，于是查看，发现Checkbox Events的<code>change</code>事件的参数变了：</p>
+<p>1.0:</p>
+<p><img src="https://segmentfault.com/img/bVY0CM?w=854&amp;h=167" alt="clipboard.png"></p>
+<p>2.0:</p>
+<p><img src="https://segmentfault.com/img/bVY0CQ?w=905&amp;h=185" alt="clipboard.png"></p>
+<p>所以，原来1.0判断change函数里面是这么写的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">handleCheckAllChange(event) &#123;</span><br><span class="line">    this.checkedCities = event.target.checked ? cityOptions : [];</span><br><span class="line">    this.isIndeterminate = false;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>2.0是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">handleCheckAllChange(val) &#123;</span><br><span class="line">    this.checkedCities = val ? cityOptions : [];</span><br><span class="line">    this.isIndeterminate = false;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>目前就是这么多，随着项目深入，可能还会遇到更多的问题和兼容版本的问题，我们可以共同探讨。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/15/怎样在vue项目下添加Eslint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雯子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Athena">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/15/怎样在vue项目下添加Eslint/" itemprop="url">
+                  怎样在vue项目下添加Eslint
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-11-15 15:13:40 / 修改时间：15:48:44" itemprop="dateCreated datePublished" datetime="2017-11-15T15:13:40+08:00">2017-11-15</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="简易搭建"><a href="#简易搭建" class="headerlink" title="简易搭建"></a>简易搭建</h2><p><a href="https://eslint.org/" target="_blank" rel="noopener">ESLint官网网址</a></p>
+<p><a href="http://eslint.cn/" target="_blank" rel="noopener">ESLint中文官网</a></p>
+<p>如果你是想在自己的项目里搭建ESLint，就可以按照官网的指示，</p>
+<p>以全局安装举例，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g eslint</span><br></pre></td></tr></table></figure>
+<p>然后初始化</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --init</span><br></pre></td></tr></table></figure>
+<p>它会问你一些问题，你可以按照你的喜好进行配置，我选的是popular下面的standard，生成的文件是js格式，那么就会创建出<code>eslintrc.js</code>文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line"><span class="string">"extends"</span>: <span class="string">"standard"</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后就可以简单的lint某个文件了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ eslint yourfile.js</span><br></pre></td></tr></table></figure>
+<h2 id="在vue的项目里新添加ESLint"><a href="#在vue的项目里新添加ESLint" class="headerlink" title="在vue的项目里新添加ESLint"></a>在vue的项目里新添加ESLint</h2><p>有的时候，早期的时候，我们建立vue项目的时候，可能图简便，并没有初始化ESLint、单元测试等等模块，那么就需要后添加进去。</p>
+<p>如果是现在新建一个项目，通过vue-cli的问答就可以轻松初始化ESLint的配置。</p>
+<p>这里说一下怎样在老项目里新添加ESLint。</p>
+<p>首先，我先用vue-cli创建了一个新项目，在初始化的时候，选择安装eslint，</p>
+<p>选择standard规则，然后就生成了<code>eslintrc.js</code>，把生成的这个文件拷贝到要加ESlint的老项目里。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://eslint.org/docs/user-guide/configuring</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">//默认情况下，ESLint 会在所有父级目录里寻找配置文件，一直到根目录。如果你想要你所有项目都遵循一个特定的约定时，这将会很有用，但有时候会导致意想不到的结果。为了将 ESLint 限制到一个特定的项目，在你项目根目录下的 package.json 文件或者 .eslintrc.* 文件里的 eslintConfig 字段下设置 "root": true。ESLint 一旦发现配置文件中有 "root": true，它就会停止在父级目录中寻找。</span></span><br><span class="line">  root: <span class="literal">true</span>,</span><br><span class="line">  parser: <span class="string">'babel-eslint'</span>,</span><br><span class="line">  parserOptions: &#123;</span><br><span class="line">    sourceType: <span class="string">'module'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  env: &#123;</span><br><span class="line">    browser: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// https://github.com/standard/standard/blob/master/docs/RULES-en.md</span></span><br><span class="line">  extends: <span class="string">'standard'</span>,</span><br><span class="line">  <span class="comment">// required to lint *.vue files</span></span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="string">'html'</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// add your custom rules here</span></span><br><span class="line">  <span class="string">'rules'</span>: &#123;</span><br><span class="line">    <span class="comment">// allow paren-less arrow functions 要求箭头函数的参数使用圆括号</span></span><br><span class="line">    <span class="string">'arrow-parens'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="comment">// allow async-await 强制 generator 函数中 * 号周围使用一致的空格</span></span><br><span class="line">    <span class="string">'generator-star-spacing'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="comment">// allow debugger during development</span></span><br><span class="line">    <span class="string">'no-debugger'</span>: process.env.NODE_ENV === <span class="string">'production'</span> ? <span class="number">2</span> : <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后找到<code>package.json</code>，把ESLint相关的依赖加进去（也可以一个一个进行安装，或者有更好的办法。。）</p>
+<p><img src="file:///var/folders/tw/l4f5twr93wl5fcvpnrwd8nvr0000gp/T/WizNote/6ef8389b-88cf-4ee1-aa09-772bb5afb6f1/index_files/68513208.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;babel-eslint&quot;: &quot;^7.1.1&quot;,   &quot;eslint&quot;: &quot;^3.19.0&quot;,</span><br><span class="line"></span><br><span class="line">&quot;eslint-friendly-formatter&quot;: &quot;^3.0.0&quot;,</span><br><span class="line">&quot;eslint-loader&quot;: &quot;^1.7.1&quot;,</span><br><span class="line">&quot;eslint-plugin-html&quot;: &quot;^3.0.0&quot;,</span><br><span class="line">&quot;eslint-config-standard&quot;: &quot;^10.2.1&quot;,</span><br><span class="line">&quot;eslint-plugin-promise&quot;: &quot;^3.4.0&quot;,</span><br><span class="line">&quot;eslint-plugin-standard&quot;: &quot;^3.0.1&quot;,</span><br><span class="line">&quot;eslint-plugin-import&quot;: &quot;^2.7.0&quot;,</span><br><span class="line">&quot;eslint-plugin-node&quot;: &quot;^5.2.0&quot;,</span><br></pre></td></tr></table></figure>
+<p>然后在<code>webpack.base.conf.js</code>的rules里添加</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">       test: <span class="regexp">/\.(js|vue)$/</span>,</span><br><span class="line">       loader: <span class="string">'eslint-loader'</span>,</span><br><span class="line">       enforce: <span class="string">'pre'</span>,</span><br><span class="line">       include: [resolve(<span class="string">'src'</span>), resolve(<span class="string">'test'</span>)],</span><br><span class="line">       options: &#123;</span><br><span class="line">         formatter: <span class="built_in">require</span>(<span class="string">'eslint-friendly-formatter'</span>)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;,</span><br></pre></td></tr></table></figure>
+<p>再<code>npm install</code>一下，应该就可以了。</p>
+<p>这里的编辑器推荐用vscode，可以非常智能的显示出哪里出错，方便修改。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/雯子前端半月刊-201710下/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1675,317 +2065,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/11/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="雯子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Athena">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/11/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-11 14:42:31" itemprop="dateCreated datePublished" datetime="2017-03-11T14:42:31+08:00">2017-03-11</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/18/月影-1-5-数组/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="雯子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Athena">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/18/月影-1-5-数组/" itemprop="url">
-                  [月影]1-5 数组
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-03-18 19:18:53" itemprop="dateCreated datePublished" datetime="2016-03-18T19:18:53+08:00">2016-03-18</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2017-03-11 14:42:31" itemprop="dateModified" datetime="2017-03-11T14:42:31+08:00">2017-03-11</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><ol>
-<li><p>实现一个函数，找出一个整数数组中最大的奇数和最小的偶数，返回它们的和，如果最大奇数和最小偶数其中一个数不存在，返回null。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> findAndSum = <span class="function"><span class="keyword">function</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//先排序，再筛选</span></span><br><span class="line">    <span class="keyword">var</span> sortArr = arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> b - a; <span class="comment">//降序排列</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> largestOdd, smallestEven;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; sortArr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (sortArr[i] % <span class="number">2</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            largestOdd = sortArr[i];</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = sortArr.length - <span class="number">1</span>; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (sortArr[j] % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            smallestEven = sortArr[j];</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> largestOdd == <span class="string">"undefined"</span> || <span class="keyword">typeof</span> smallestEven == <span class="string">"undefined"</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> largestOdd + smallestEven;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>实现一个函数，将一个有序的数组完全随机打乱顺序。<br>发现sort这个函数的强大，以前面试动不动就排序。。</p>
-</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> randomOrder = <span class="function"><span class="keyword">function</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.random() - <span class="number">0.5</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>找出一个整数数组中任意两个数之和为10的所有结果。</li>
-</ol>
-<blockquote>
-<p>提高查找效率通常可以先将要查找的数组排序，然后用二分查找等方法进行查找，就可以将原来O（N）的查找时间缩短到O（log2N），这样对于每个arr[i]，都要花O（log2N）去查找对应的Sum-arr[i]在不在数组中，总的时间复杂度降低为N<em> log2N。当让将长度为N的数组进行排序本身也需要O（N</em>log2N）的时间，好在只须要排序一次就够了，所以总的时间复杂度依然是O（N*log2N）。</p>
-<p>首先对数组进行排序，时间复杂度为（N*log2N）。然后令i = 0，j = n-1，看arr[i] + arr[j] 是否等于Sum，如果是，则结束。如果小于Sum，则i = i + 1；如果大于Sum，则 j = j – 1。这样只需要在排好序的数组上遍历一次，就可以得到最后的结果，时间复杂度为O（N）。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> findNum10 = <span class="function"><span class="keyword">function</span>(<span class="params">arr,sum</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//先排序，再筛选</span></span><br><span class="line">    <span class="keyword">var</span> sortArr = arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a - b;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>,j=sortArr.length - <span class="number">1</span>; i&lt;j;)&#123;</span><br><span class="line">        <span class="keyword">if</span>(sortArr[i] + sortArr[j] == sum)&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(sortArr[i],sortArr[j]);</span><br><span class="line">            i++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sortArr[i] + sortArr[j] &lt; sum)&#123;</span><br><span class="line">            i++;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2037,7 +2116,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-count">27</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
